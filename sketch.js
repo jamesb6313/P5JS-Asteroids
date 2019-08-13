@@ -21,6 +21,15 @@ function setup() {
 		asteroids.push(new Asteroid());
 	}
 	
+	//avoid making Asteroid on ship
+	/* for (var a of asteroids) {
+		
+		var d = dist(ship.pos.x, ship.pos.y, a.pos.x, a.pos.y);
+		if (d < ship.r + a.r) {
+			
+		}			
+	} */
+	
 	textSize(32);
 	score = 0;
 	hits = 0;
