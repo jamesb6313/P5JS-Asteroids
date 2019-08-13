@@ -25,6 +25,12 @@ function Asteroid(pos, r) {
 		return newA;
 	}
 	
+	this.changeDir = function() {
+		this.vel.mult(-1);
+		//console.log(this.vel);
+		this.update();
+	}
+	
 	this.update = function() {
 		this.pos.add(this.vel);
 		//this.vel.mult(0.99);	//dampen ever frame
