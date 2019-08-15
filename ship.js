@@ -1,84 +1,108 @@
-function Ship() {
-	this.pos = createVector(width/2, height/2);
-	this.r = 20;
-	this.heading = 0;
-	this.rotation = 0;
-	this.vel = createVector(0,0);
-	this.isBoosting = false;
-	this.red = 0;
-	this.grn = 255;
-	
-	this.render = function() {
-		push();
-		translate(this.pos.x, this.pos.y);
-		rotate(this.heading + (PI /2));
-		fill(0);
-		stroke(this.red, this.grn, 0);
-		triangle(-this.r, this.r, this.r, this.r, 0, -this.r);
-		pop();
-	}
-	
-	this.hits = function(asteroid) {
-		var d = dist(this.pos.x, this.pos.y, asteroid.pos.x, asteroid.pos.y);
-		if (d < this.r + asteroid.r) {
-			this.changeColor();
-			asteroid.changeDir();
+class Ship {
 
-			return true;
-		} else {
-			return false;
+	constructor(x, y, r, a) {
+		const deltaHealth = 0.05;
+		this.health = 1;
+
+		const options = {
+			friction: 0.0,
+			frictionAir : 0.01,
+			restitution: 0.3,
+			angle: a
+			//collisionFilter: 0x0002
 		}
-	}
-	
-	this.changeColor = function() {
+		this.body = Bodies.circle(x, y, r, options);
+		Body.setMass(this.body, this.body.mass*4);
+		World.add(world, this.body);
+		//console.log(this.body);
+		this.r = r;
+		this.isBoosting = false;
+		this.isRotating = 0;
 		
-		if (this.grn > 0) {
-			this.grn = 0;
-			this.red = 255;
-		} else {
-			this.grn = 255;
-			this.red = 0;
-		}
-		console.log(this.red, this.grn);
 	}
-	
-	this.edges = function() {
-		if (this.pos.x > width + this.r) {
-			this.pos.x = -this.r;
-		} else if (this.pos.x < -this.r) {
-			this.pos.x = width + this.r;
+
+	show() {
+		const pos = this.body.position;
+		const angle = this.body.angle;
+		
+		
+		push();
+		translate(pos.x, pos.y);
+		rotate(angle);
+		rectMode(CENTER);
+		noFill();
+		stroke(0, 255, 0);
+		//imageMode(CENTER);
+		circle(0, 0, this.r * 2, this.r * 2);
+		line(0, 0, this.r, 0);	//show angle
+		if (this.isBoosting) {
+			boost();
 		}
 		
-		if (this.pos.y > height + this.r) {
-			this.pos.y = -this.r;
-		} else if (this.pos.y < -this.r) {
-			this.pos.y = height + this.r;
+		if (this.isRotating != 0) {
+			this.setRotation(this.isRotating);
 		}
+		pop();
+
 	}
 	
-	this.boosting = function(b) {
+	boosting(b) {
 		this.isBoosting = b;
 	}
 	
-	this.update = function() {
-		if (this.isBoosting) {
-			this.boost();
+	boost() {
+		var fVector = p5.Vector.fromAngle(this.body.angle);
+		fVector.mult(.2);
+		//console.log(fVector.x, fVector.y, this.body.angle);
+		Body.applyForce(this.body, this.body.position,  fVector);
+	}
+	
+	setRotation(a) {
+		this.isRotating = a;
+		Body.rotate(this.body, this.isRotating);
+	}
+  
+  	hits(asteroid) {
+
+		//use p5.lerp function to increment green to red transition
+
+		var d = dist(this.pos.x, this.pos.y, asteroid.pos.x, asteroid.pos.y);
+		var range = this.forceField ? this.r +  50 : this.r;
+
+		if (d < range + asteroid.r) {
+
+			//asteroid.changeDir();
+			this.health -= deltaHealth;
+			//this.changeColor();
+			return true;
+		} else {
+			return false;
+		}			
+
+	}
+	
+	edges() {
+		var nx = 0; 
+		var ny = 0;
+		
+		if (this.body.position.x > width + this.r) {
+			nx = -this.r;
+		} else if (this.body.position.x < -this.r) {
+			nx = width + this.r;
 		}
-		this.pos.add(this.vel);
-		this.vel.mult(0.99);	//dampen ever frame
-	}
-	
-	this.boost = function() {
-		var force = p5.Vector.fromAngle(this.heading);
-		force.mult(0.1);
-		this.vel.add(force);
-	}
-	
-	this.setRotation = function(a) {
-		this.rotation = a;
-	}
-	
-	this.turn = function() {
-		this.heading += this.rotation;;
+		if (nx != 0) {
+			Body.setPosition(this.body, { x: nx, y: this.body.position.y });
+		}
+		
+		if (this.body.position.y > height + this.r) {
+			ny = -this.r;
+		} else if (this.body.position.y < -this.r) {
+			ny = height + this.r;
+		}
+		
+		if (ny != 0) {
+			Body.setPosition(this.body, { x: this.body.position.x, y: ny });
+		}
+
 	}
 }

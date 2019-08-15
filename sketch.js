@@ -1,6 +1,19 @@
 //See: https://thecodingtrain.com/CodingChallenges/046.1-asteroids-part-1.html
 
+const { 
+	Engine, 
+	World, 
+	Bodies, 
+	Body, 
+	Mouse, 
+	MouseConstraint, 
+	Constraint,
+	Events,
+	Detector
+} = Matter;
+
 var ship;
+var mybox;
 var asteroids = [];
 var lasers = [];
 
@@ -11,16 +24,26 @@ var loopCtr = 0;
 var score;
 var hits;
 
+let world, engine;
+
 function setup() {
 	// put setup code 
-	createCanvas(400, 400); //(windowWidth, windowHeight);
-	colorMode(RGB);
+	const canvas = createCanvas(800, 600); //(windowWidth, windowHeight);
 	
-	ship = new Ship();
-	for (var i = 0; i < 5; i++) {
+	engine = Engine.create();
+	world = engine.world;
+	world.gravity.y = 0;
+	
+	addEvents(engine);
+	
+	//colorMode(RGB);
+	mybox = new Box(width - 100, height / 2, 50, 50);
+	
+	ship = new Ship(width/2,height/2, 50, 0);
+	for (var i = 0; i < 1; i++) {
 		asteroids.push(new Asteroid());
 	}
-	
+
 	//avoid making Asteroid on ship
 	/* for (var a of asteroids) {
 		
@@ -33,21 +56,27 @@ function setup() {
 	textSize(32);
 	score = 0;
 	hits = 0;
-	
+
 }
+	
 
 function draw() {
 	// put drawing code here
 	background(0);
+	Matter.Engine.update(engine);
+
+	if (ship.health <= 0) {	// Stop
+		noLoop();
+	}
 	loopCtr += 1;
 	
 	fill(255);
 	text('Score: ' + score, 10, 50);
 	text('Hits: ' + hits, 250, 50);
 	
-	for (var i = 0; i < asteroids.length; i++) {
+	/* for (var i = 0; i < asteroids.length; i++) {
 		if (ship.hits(asteroids[i])) {
-			console.log('oooops!');
+			console.log('oooops! - ', ship.health);
 			hits += 1;
 		}
 		asteroids[i].render();
@@ -63,13 +92,25 @@ function draw() {
 		}
 	}
 	
-	laserFire();
+	laserFire(); */
+/* 	var broadphase = engine.broadphase;
+	var broadphasePairs = [];
 	
-	ship.render();
-	ship.turn();
-	ship.update();
+	//var pair = [];
+	broadphasePairs.push(ship);
+	broadphasePairs.push(box);
+	console.log(broadphasePairs);
+	
+	var colArray = Detector.collisions(broadphasePairs, engine);
+	for (i = 0; i < colArray.length; i++) {
+		console.log("here");
+	} */
+	mybox.show();
 	ship.edges();
-} 
+	ship.show();
+	
+
+}
 
 function laserFire() {
 	for (var i = lasers.length - 1; i >= 0; i--) {
@@ -97,6 +138,7 @@ function laserFire() {
 	}
 }
 
+
 function keyReleased() {
 	if (key == 'a') {
 		rapid = false;
@@ -113,14 +155,14 @@ function keyPressed() {
 		rapidStart = loopCtr;
 		ship.setRotation(1);
 		ship.boosting(false);
-		lasers.push(new Laser(ship.pos, ship.heading));
+		lasers.push(new Laser(ship.body.position, ship.body.angle));
 	} else if (key == ' ') {
-		lasers.push(new Laser(ship.pos, ship.heading));
+		lasers.push(new Laser(ship.body.position, ship.body.angle));
 	} else if (keyCode == RIGHT_ARROW) {
-		ship.setRotation(0.1);
+		ship.setRotation(0.02);
 	} else if (keyCode == LEFT_ARROW) {
-		ship.setRotation(-0.1);
+		ship.setRotation(-0.02);
 	} else if (keyCode == UP_ARROW) {
-		ship.boosting(true);
+		ship.boost();
 	}
 }
