@@ -1,24 +1,38 @@
 class Ship {
 
 	constructor(x, y, r, a) {
-		const deltaHealth = 0.05;
-		this.health = 1;
+		this.r = r;
+		
+		this.deltaHealth = 0.05;
+		this.health = 1.0;
+		this.fieldColor = color(0, 255, 0);	
+		this.forceField = true;		
+		this.isBoosting = false;
+		this.isRotating = 0;
 
 		const options = {
 			friction: 0.0,
 			frictionAir : 0.01,
 			restitution: 0.3,
-			angle: a
-			//collisionFilter: 0x0002
+			angle: a,
+			label: "ship"
 		}
 		this.body = Bodies.circle(x, y, r, options);
 		Body.setMass(this.body, this.body.mass*4);
 		World.add(world, this.body);
 		//console.log(this.body);
-		this.r = r;
-		this.isBoosting = false;
-		this.isRotating = 0;
 		
+		let group = Body.nextGroup(false);
+		this.body.collisionFilter.group = group;
+		
+		console.log(this.body);
+		console.log("ship - Body Collision Filter = ", this.body.collisionFilter);		
+	}
+	
+	changeColor() {
+		var gr = color(0, 255, 0);
+		var rd = color(255, 0, 0);
+		this.fieldColor = lerpColor(gr, rd, 1 - this.health);
 	}
 
 	show() {
@@ -31,8 +45,7 @@ class Ship {
 		rotate(angle);
 		rectMode(CENTER);
 		noFill();
-		stroke(0, 255, 0);
-		//imageMode(CENTER);
+		stroke(this.fieldColor);
 		circle(0, 0, this.r * 2, this.r * 2);
 		line(0, 0, this.r, 0);	//show angle
 		if (this.isBoosting) {
@@ -63,17 +76,12 @@ class Ship {
 	}
   
   	hits(asteroid) {
-
 		//use p5.lerp function to increment green to red transition
-
 		var d = dist(this.pos.x, this.pos.y, asteroid.pos.x, asteroid.pos.y);
 		var range = this.forceField ? this.r +  50 : this.r;
 
 		if (d < range + asteroid.r) {
-
-			//asteroid.changeDir();
 			this.health -= deltaHealth;
-			//this.changeColor();
 			return true;
 		} else {
 			return false;
