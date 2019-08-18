@@ -12,8 +12,8 @@ class Box {
 	let group = Body.nextGroup(false);			 //to get a non-colliding group, then set 
 	this.body.collisionFilter.group = group;
 	
-	console.log(group);
-	console.log("box - Body Collision Filter = ", this.body.collisionFilter);
+	//console.log(group);
+	//console.log("box - Body Collision Filter = ", this.body.collisionFilter);
 	
 	
     Matter.World.add(world, this.body);
