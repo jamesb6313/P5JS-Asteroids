@@ -76,10 +76,12 @@ function draw() {
 		if (removeAsteroids) {
 			for (var i = asteroids.length - 1; i >= 0; i--) {
 				if (asteroids[i].body.label == 'asteroidDebris') {
-					Body.scale(asteroids[i].body, 20, 20);
-					asteroids[i].body.label == 'asteroid';
+					Body.scale(asteroids[i].body, asteroids[i].parentR, asteroids[i].parentR);
+					asteroids[i].r = asteroids[i].parentR * 0.5;
+					asteroids[i].body.circleRadius = asteroids[i].r;
+					asteroids[i].body.label = 'asteroid';
 					asteroids[i].show();
-					console.log('Debris', asteroids[i].body);
+					//console.log('Debris', asteroids[i].body);
 				}
 			}
 			removeAsteroids = false;

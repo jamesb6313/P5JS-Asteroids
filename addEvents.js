@@ -13,26 +13,41 @@ function addEvents(e) {
 			
 			//ship collisions
 			if (a.label == 'ship') {
-				ship.health -= ship.deltaHealth;				
+				var hitMass = 1;
+				if (b.mass >= 5) {
+					hitMass = 5;
+				}
+				if (b.mass < 0.1) {
+					hitMass = 0.1;
+				}
+				
+				ship.health -= (ship.deltaHealth * hitMass);
 				ship.changeColor();
 			} else {
 				if (b.label == 'ship') {
-					ship.health -= ship.deltaHealth;					
+					var hitMass = 1;
+					if (a.mass >= 5) {
+						hitMass = 5;
+					}
+					if (a.mass < 0.1) {
+						hitMass = 0.1;
+					}
+				
+					ship.health -= (ship.deltaHealth * hitMass);	
 					ship.changeColor();
 				}
 			}			
 
 			//Asteroid collisions (possible hits)
 			if (a.label == 'asteroid') {
-				console.log("1 a.label ", a);
+				//console.log("1 a.label ", a);
 				if (b.label == 'laser') {
-					console.log("1 b.label ", b);
+					//console.log("1 b.label ", b);
 					score++;
-					console.log(a.id);
 					for (var i = asteroids.length - 1; i >= 0; i--) {
 						if (a.id == asteroids[i].id) {
 							
-							if (a.circleRadius > 10) {
+							if (a.circleRadius >= 10) {
 								asteroids[i].split = true;
 							}
 							asteroids[i].dead = true;
@@ -45,13 +60,13 @@ function addEvents(e) {
 			} else {
 				if (a.label == 'laser') {
 					if (b.label == 'asteroid') {
-					console.log("2 b.label ", b);
+					//console.log("2 b.label ", b);
 					score++;
-					console.log(b.id);
+					//console.log(b.id);
 					for (var i = asteroids.length - 1; i >= 0; i--) {
 						if (b.id == asteroids[i].id) {
 							
-							if (b.circleRadius > 10) {
+							if (b.circleRadius >= 10) {
 								asteroids[i].split = true;
 							}
 							asteroids[i].dead = true;							
@@ -83,14 +98,14 @@ function addEvents(e) {
 					console.log('this.pos', asteroids[i].pos);
 					asteroids[i].pos.x = asteroids[i].body.position.x;
 					asteroids[i].pos.y = asteroids[i].body.position.y;
-					console.log('body', asteroids[i].body.position);
-					console.log('this.pos', asteroids[i].pos);
 					
 					World.remove(engine.world, asteroids[i].body);
 					var newAsteroids = asteroids[i].breakup();								
 					asteroids = asteroids.concat(newAsteroids);
 				}
+				
 				removeAsteroids = true;
+				World.remove(engine.world, asteroids[i].body);
 				asteroids.splice(i, 1);
 			}
 		}

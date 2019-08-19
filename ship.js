@@ -25,8 +25,8 @@ class Ship {
 		let group = Body.nextGroup(false);
 		this.body.collisionFilter.group = group;
 		
-		console.log(this.body);
-		console.log("ship - Body Collision Filter = ", this.body.collisionFilter);		
+		//console.log(this.body);
+		//console.log("ship - Body Collision Filter = ", this.body.collisionFilter);		
 	}
 	
 	changeColor() {
