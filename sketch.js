@@ -49,7 +49,6 @@ function setup() {
 	world.gravity.x = 0;
 	
 	gameSetup();
-
 	
 	addEvents(engine);
 	ship = new Ship(width/2,height/2, shipRadius, 0);	
@@ -66,23 +65,25 @@ function setup() {
 	textSize(32);
 	score = 0;
 	hits = 0;
-	//Engine.run(engine);
 }
 	
 
 function draw() {
 	background(0);
 
-	if (frameCount % 10 && removeAsteroids) {
-		for (var i = asteroids.length - 1; i >= 0; i--) {
-			if (asteroids[i].body.label == 'asteroidDebris') {
-				Body.scale(asteroids[i].body, 20, 20);
-				asteroids[i].body.label == 'asteroid';
-				asteroids[i].show();
-				//console.log('Debris', asteroids[i].body);
+	if (frameCount % 10) {
+		//console.log('number of bodies ; ', world.bodies.length);
+		if (removeAsteroids) {
+			for (var i = asteroids.length - 1; i >= 0; i--) {
+				if (asteroids[i].body.label == 'asteroidDebris') {
+					Body.scale(asteroids[i].body, 20, 20);
+					asteroids[i].body.label == 'asteroid';
+					asteroids[i].show();
+					console.log('Debris', asteroids[i].body);
+				}
 			}
+			removeAsteroids = false;
 		}
-		removeAsteroids = false;
 	}
 
 	getHUD();
@@ -100,17 +101,7 @@ function draw() {
 	text('Score: ' + score, 10, 50);
 	text('Hits: ' + hits, 250, 50);
 	
-	/* for (var i = 0; i < asteroids.length; i++) {
-		if (ship.hits(asteroids[i])) {
-			console.log('oooops! - ', ship.health);
-			hits += 1;
-		}
-		asteroids[i].render();
-		asteroids[i].update();
-		asteroids[i].edges();
-	}
-	
-	if (rapid) {
+	/* if (rapid) {
 		if (loopCtr - rapidStart < 50) {
 			lasers.push(new Laser(ship.pos, ship.heading));
 		} else {
@@ -143,40 +134,12 @@ function healthBar() { // player health bar
 function laserFire() {
 	for (var i = lasers.length - 1; i >= 0; i--) {
 		lasers[i].show();
-		//lasers[i].update();
-			
-		
-		/*else { 
-		
-			for (var j = asteroids.length - 1; j >= 0; j--) {
-				if (lasers[i].hits(asteroids[j])) {
-					score++;
-					if (asteroids[j].r > 10) {
-						var newAsteroids = asteroids[j].breakup();						
-						asteroids = asteroids.concat(newAsteroids);
-					}
-					asteroids.splice(j, 1);
-					lasers.splice(i, 1);
-					break;
-				}
-			}
-		}*/
 	}
 }
 
 function laserEndCycle() {
 	for (var i = lasers.length - 1; i >= 0; i--) {
-		if (lasers[i].offscreen()) {
-			World.remove(engine.world, lasers[i].body);
-			console.log('offscreen');
-			lasers.splice(i, 1);
-		} else { 
-			if (lasers[i].body.label == "dead") {
-				World.remove(engine.world, lasers[i].body);
-				console.log('dead');
-				lasers.splice(i, 1);			
-			}
-		}
+		lasers[i].offscreen();
 	}
 }
 

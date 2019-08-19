@@ -15,14 +15,10 @@ function addEvents(e) {
 			if (a.label == 'ship') {
 				ship.health -= ship.deltaHealth;				
 				ship.changeColor();
-				//console.log(ship);
-				//console.log("a is ship collisionStart");
 			} else {
 				if (b.label == 'ship') {
 					ship.health -= ship.deltaHealth;					
 					ship.changeColor();
-					//console.log(ship);
-					//console.log("b is ship collisionStart");
 				}
 			}			
 
@@ -40,6 +36,7 @@ function addEvents(e) {
 								asteroids[i].split = true;
 							}
 							asteroids[i].dead = true;
+							console.log(asteroids[i]);
 							break;
 						}
 					}
@@ -57,7 +54,7 @@ function addEvents(e) {
 							if (b.circleRadius > 10) {
 								asteroids[i].split = true;
 							}
-							asteroids[i].dead = true;
+							asteroids[i].dead = true;							
 							break;
 						}
 					}
@@ -82,7 +79,13 @@ function addEvents(e) {
 			if (asteroids[i].dead) {
 				
 				if (asteroids[i].split) {
-					console.log("dead Asteroid", asteroids[i]);
+					console.log('body', asteroids[i].body.position);
+					console.log('this.pos', asteroids[i].pos);
+					asteroids[i].pos.x = asteroids[i].body.position.x;
+					asteroids[i].pos.y = asteroids[i].body.position.y;
+					console.log('body', asteroids[i].body.position);
+					console.log('this.pos', asteroids[i].pos);
+					
 					World.remove(engine.world, asteroids[i].body);
 					var newAsteroids = asteroids[i].breakup();								
 					asteroids = asteroids.concat(newAsteroids);
@@ -135,5 +138,22 @@ function addEvents(e) {
 			var pair = pairs[i];
 			//console.log("collisionEnd");
 		}
+	});
+	
+	Events.on(e, 'afterUpdate', function(event) {
+		//console.log('afterUpdate');
+		for (var i = lasers.length - 1; i >= 0; i--) {
+			if (lasers[i].body.label == 'dead') {								
+				World.remove(world, lasers[i].body);
+				lasers[i].remove = true;
+			}
+		}
+		
+ 		for (var i = lasers.length - 1; i >= 0; i--) {
+			if (lasers[i].remove) {
+				lasers.splice(i, 1);
+			}
+		} 
+		
 	});
 }

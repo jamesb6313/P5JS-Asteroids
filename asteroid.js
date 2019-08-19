@@ -1,8 +1,6 @@
 class Asteroid {
 	
 	constructor(pos, r, oldR) {
-
-		//console.log(this);
 		var bodyLabel = 'asteroid';
 		
 		if (pos) {
@@ -20,7 +18,6 @@ class Asteroid {
 			this.parentR = oldR;
 		}
 		
-		//console.log("new asteroid : ", this.pos);
 		this.dead = false;
 		this.split = false
 		
@@ -91,12 +88,14 @@ class Asteroid {
 		//can cause same problem as on startup is asteroid is drawn on ship
 		var newA = [];
 		
-		pos.x = oldR + pos.x * cos(PI / 4);
-		pos.y = oldR + pos.y * sin(PI / 4);
+		pos.x = pos.x + oldR * cos(PI);
+		pos.y = pos.y + oldR * sin(PI);
+		console.log('newA0 : ', pos);
 		newA[0] = new Asteroid(pos, cr, oldR );
 		
-		pos.x = oldR + pos.x * cos(PI);
-		pos.y = oldR + pos.y * sin(PI);
+		pos.x = pos.x + oldR * cos(0);
+		pos.y = pos.y + oldR * sin(0);
+		console.log('newA1 : ', pos);
 		newA[1] = new Asteroid(pos, cr, oldR );
 		return newA;
 	}
