@@ -26,7 +26,7 @@ var divHUD,divHealth,divHealthBar;
 var btnStop;
 
 var score;
-var hits;
+var shots;
 
 let world, engine;
 var display;
@@ -55,7 +55,7 @@ function setup() {
 	mybox = new Box(width - 100, height / 2, 50, 50);
 	
 
-	for (var i = 0; i < 1; i++) {
+	for (var i = 0; i < 5; i++) {
 		asteroids.push(new Asteroid());
 		//console.log(asteroids[i]);
 		//Body.setVelocity(asteroids[i].body, {x: asteroids[i].vel.x, y: asteroids[i].vel.y} );
@@ -64,7 +64,7 @@ function setup() {
 	
 	textSize(32);
 	score = 0;
-	hits = 0;
+	shots = 0;
 }
 	
 
@@ -101,15 +101,16 @@ function draw() {
 	
 	fill(255);
 	text('Score: ' + score, 10, 50);
-	text('Hits: ' + hits, 250, 50);
+	text('Shots Fired: ' + shots, 250, 50);
 	
-	/* if (rapid) {
+	if (rapid) {
 		if (loopCtr - rapidStart < 50) {
-			lasers.push(new Laser(ship.pos, ship.heading));
+			lasers.push(new Laser(ship));
+			shots++;
 		} else {
 			rapid = false;
 		}
-	}*/
+	}
 
 	for (let i = 0; i < asteroids.length; i++) {
 		asteroids[i].show();
@@ -146,6 +147,8 @@ function laserEndCycle() {
 }
 
 function getHUD() {
+	
+	//console.log(asteroids.length);
 	display =  
 	'<table> ' +
 		'<tr> <td>&nbsp;m_t:</td>  <td>' 
@@ -156,8 +159,8 @@ function getHUD() {
 			+ ship.body.position.x.toFixed(0) + '</td> </tr>' +
 		'<tr> <td style="color:#77f;">&nbsp;y:</td>    <td>' 
 			+ ship.body.position.y.toFixed(0) + '</td> </tr>' +
-		'<tr> <td style="color:#0dd;">Vx:</td>   <td>' 
-			+ ship.body.velocity.x.toFixed(2) + '</td> </tr>' +
+		'<tr> <td style="color:#0dd;">Asteroids:</td>   <td>' 
+			+ asteroids.length + '</td> </tr>' +
 		'<tr> <td style="color:#0dd;">Vy:</td>   <td>' 
 			+ ship.body.velocity.y.toFixed(2) + '</td> </tr>' +
 		'<tr> <td style="color:#d0d;">H :</td>   <td>' 
@@ -200,7 +203,7 @@ function gameSetup() {
 function keyReleased() {
 	if (key == 'a') {
 		rapid = false;
-		console.log('Key a released');
+		//console.log('Key a released');
 	}
 	ship.setRotation(0);
 	ship.boosting(false);
@@ -214,8 +217,10 @@ function keyPressed() {
 		ship.setRotation(1);
 		ship.boosting(false);
 		lasers.push(new Laser(ship));
+		shots++;
 	} else if (key == ' ') {
 		lasers.push(new Laser(ship));
+		shots++;
 	} else if (keyCode == RIGHT_ARROW) {
 		ship.setRotation(0.02);
 	} else if (keyCode == LEFT_ARROW) {

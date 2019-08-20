@@ -3,7 +3,7 @@ class Ship {
 	constructor(x, y, r, a) {
 		this.r = r;
 		
-		this.deltaHealth = 0.05;
+		this.deltaHealth = 0.01;
 		this.health = 1.0;
 		this.fieldColor = color(0, 255, 0);	
 		this.forceField = true;		

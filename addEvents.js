@@ -2,7 +2,7 @@ function addEvents(e) {
 	// an example of using collisionStart event on an engine
 	Events.on(e, 'collisionStart', function(event) {
 		var pairs = event.pairs;
-		console.log("Start event : ", e);
+		//console.log("Start event : ", e);
 		// change object colours to show those starting a collision
 		for (var i = 0; i < pairs.length; i++) {
 			var pair = pairs[i];
@@ -51,7 +51,7 @@ function addEvents(e) {
 								asteroids[i].split = true;
 							}
 							asteroids[i].dead = true;
-							console.log(asteroids[i]);
+							//console.log(asteroids[i]);
 							break;
 						}
 					}
@@ -89,13 +89,13 @@ function addEvents(e) {
 		}
 		
 		
-		console.log('starting breakup()');
+		//console.log('starting breakup()');
 		for (var i = asteroids.length - 1; i >= 0; i--) {
 			if (asteroids[i].dead) {
 				
 				if (asteroids[i].split) {
-					console.log('body', asteroids[i].body.position);
-					console.log('this.pos', asteroids[i].pos);
+					//console.log('body', asteroids[i].body.position);
+					//console.log('this.pos', asteroids[i].pos);
 					asteroids[i].pos.x = asteroids[i].body.position.x;
 					asteroids[i].pos.y = asteroids[i].body.position.y;
 					

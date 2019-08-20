@@ -90,12 +90,12 @@ class Asteroid {
 		
 		pos.x = pos.x + oldR * cos(PI);
 		pos.y = pos.y + oldR * sin(PI);
-		console.log('newA0 : ', pos);
+		//console.log('newA0 : ', pos);
 		newA[0] = new Asteroid(pos, cr, oldR );
 		
 		pos.x = pos.x + oldR * cos(0);
 		pos.y = pos.y + oldR * sin(0);
-		console.log('newA1 : ', pos);
+		//console.log('newA1 : ', pos);
 		newA[1] = new Asteroid(pos, cr, oldR );
 		return newA;
 	}
