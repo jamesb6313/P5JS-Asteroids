@@ -35,12 +35,13 @@ class Laser {
 		const angle = this.body.angle;
 		
 		push();
+		ellipseMode(CENTER);
 		translate(pos.x, pos.y);
 		rotate(angle);
-		//noFill();
-		stroke(225);
 		strokeWeight(2);
-		circle(0, 0, this.r * 2, this.r * 2);
+		stroke(255);		//white border
+		fill(255, 0, 0);	//red interior
+		ellipse(0, 0, this.r * 2, this.r * 2);
 		pop();
 	}
 		

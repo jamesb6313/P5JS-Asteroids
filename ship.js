@@ -20,7 +20,6 @@ class Ship {
 		this.body = Bodies.circle(x, y, r, options);
 		Body.setMass(this.body, this.body.mass*4);
 		World.add(world, this.body);
-		//console.log(this.body);
 		
 		let group = Body.nextGroup(false);
 		this.body.collisionFilter.group = group;
@@ -65,9 +64,10 @@ class Ship {
 	
 	boost() {
 		var fVector = p5.Vector.fromAngle(this.body.angle);
-		fVector.mult(.2);
-		//console.log(fVector.x, fVector.y, this.body.angle);
-		Body.applyForce(this.body, this.body.position,  fVector);
+		fVector.mult(.05);
+		//console.log(fVector, this.body.angle);
+		//console.log({ x: fVector.x, y : fVector.y }, this.body.angle);
+		Body.applyForce(this.body, this.body.position,  { x: fVector.x, y : fVector.y } );
 	}
 	
 	setRotation(a) {
@@ -75,7 +75,7 @@ class Ship {
 		Body.rotate(this.body, this.isRotating);
 	}
   
-  	hits(asteroid) {
+/*   	hits(asteroid) {
 		//use p5.lerp function to increment green to red transition
 		var d = dist(this.pos.x, this.pos.y, asteroid.pos.x, asteroid.pos.y);
 		var range = this.forceField ? this.r +  50 : this.r;
@@ -87,7 +87,7 @@ class Ship {
 			return false;
 		}			
 
-	}
+	} */
 	
 	edges() {
 		var nx = 0; 

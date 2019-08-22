@@ -11,7 +11,7 @@ class Asteroid {
 		if (r) {
 			this.r = r * 0.5;
 		} else {
-			this.r = random(15, 50);
+			this.r = random(minAsteroidRadius, 50);
 		}
 		if (oldR) {
 			bodyLabel = 'asteroidDebris';
@@ -47,14 +47,14 @@ class Asteroid {
 			//angle:2,
 		    label: bodyLabel
 		}
+		
 		//this.body = Bodies.fromVertices(this.pos.x, this.pos.y, vertx, options);
 		this.body = Bodies.circle(this.pos.x, this.pos.y, this.r, options);
 		Body.setMass(this.body, this.body.mass*4);
 		Body.setVelocity(this.body, {x: this.vel.x, y: this.vel.y} );
 		World.add(world, this.body);
 		
-		this.id = this.body.id;
-		
+		this.id = this.body.id;		
 	}
 	
 	show() {
@@ -85,7 +85,7 @@ class Asteroid {
 		var cr = 1;
 		var oldR = this.r;
 		
-		//can cause same problem as on startup is asteroid is drawn on ship
+		//can cause same problem as on startup if asteroid is drawn on ship
 		var newA = [];
 		
 		pos.x = pos.x + oldR * cos(PI);

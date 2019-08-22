@@ -40,18 +40,15 @@ function addEvents(e) {
 
 			//Asteroid collisions (possible hits)
 			if (a.label == 'asteroid') {
-				//console.log("1 a.label ", a);
 				if (b.label == 'laser') {
-					//console.log("1 b.label ", b);
 					score++;
 					for (var i = asteroids.length - 1; i >= 0; i--) {
 						if (a.id == asteroids[i].id) {
 							
-							if (a.circleRadius >= 10) {
+							if (a.circleRadius >= minAsteroidRadius) {
 								asteroids[i].split = true;
 							}
 							asteroids[i].dead = true;
-							//console.log(asteroids[i]);
 							break;
 						}
 					}
@@ -60,9 +57,7 @@ function addEvents(e) {
 			} else {
 				if (a.label == 'laser') {
 					if (b.label == 'asteroid') {
-					//console.log("2 b.label ", b);
 					score++;
-					//console.log(b.id);
 					for (var i = asteroids.length - 1; i >= 0; i--) {
 						if (b.id == asteroids[i].id) {
 							
@@ -89,7 +84,6 @@ function addEvents(e) {
 		}
 		
 		
-		//console.log('starting breakup()');
 		for (var i = asteroids.length - 1; i >= 0; i--) {
 			if (asteroids[i].dead) {
 				
@@ -116,7 +110,7 @@ function addEvents(e) {
 	Events.on(e, 'collisionActive', function(event) {
 		var pairs = event.pairs;
 
-		// change object colours to show those in an active collision (e.g. resting contact)
+		//active collision (e.g. resting contact)
 		for (var i = 0; i < pairs.length; i++) {
 			var pair = pairs[i];
 			let a = pair.bodyA;
@@ -139,8 +133,6 @@ function addEvents(e) {
 					b.label = "dead"
 				}
 			}
-			
-			//console.log("collisionActive", lasers);
 		}
 	});
 
@@ -151,12 +143,10 @@ function addEvents(e) {
 		// change object colours to show those ending a collision
 		for (var i = 0; i < pairs.length; i++) {
 			var pair = pairs[i];
-			//console.log("collisionEnd");
 		}
 	});
 	
 	Events.on(e, 'afterUpdate', function(event) {
-		//console.log('afterUpdate');
 		for (var i = lasers.length - 1; i >= 0; i--) {
 			if (lasers[i].body.label == 'dead') {								
 				World.remove(world, lasers[i].body);
