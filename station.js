@@ -22,6 +22,8 @@ class Station {
 
 		Matter.World.add(world, this.body);
 		this.id = this.body.id;
+		this.x = x;
+		this.y = y;
 		this.w = w;
 		this.h = h;
 	}
@@ -46,7 +48,11 @@ class Station {
 	}
 	
 	explode(idx) {
+		//console.log('station explode',stations[idx].x)
+		fireworks.push(new Firework(stations[idx].x, stations[idx].y));
+		//console.log('firework created');
 		stations.splice(idx, 1);
+		
 		this.clr = 255;
 	}
 }

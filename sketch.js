@@ -38,6 +38,8 @@ let gameTimeScale = 1;
 let gameLevel = 1;
 let gameStage = 1;
 
+let fireworks = [];
+
 
 let world, engine;
 let p5DeltaT,p5Time;
@@ -70,6 +72,7 @@ function setup() {
 		//Body.setVelocity(asteroids[i].body, {x: asteroids[i].vel.x, y: asteroids[i].vel.y} );
 		
 	}
+	
 }
 
 function draw() {
@@ -163,6 +166,17 @@ function draw() {
 	}
 	ship.edges();
 	ship.show();
+	
+	for (var i = fireworks.length - 1; i >= 0; i--) {
+		console.log('fireworks.length', fireworks.length);
+		
+		fireworks[i].update();
+		fireworks[i].show();
+		if (fireworks[i].done()) {
+			fireworks.splice(i, 1);
+		}		
+	}
+	
 	healthBar();
 
 }

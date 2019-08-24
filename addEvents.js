@@ -44,6 +44,7 @@ function addEvents(e) {
 					for (var j = asteroids.length - 1; j >= 0; j--) {
 						if (a.id == asteroids[j].id) {
 							
+							
 							if (a.circleRadius >= minAsteroidRadius) {
 								asteroids[j].split = true;
 							}
@@ -148,13 +149,14 @@ function addEvents(e) {
 		//on top of each other
 		for (var i = asteroids.length - 1; i >= 0; i--) {
 			if (asteroids[i].dead) {
+				//asteroid.pos should be always = to body.position - needs fixed//
+				
+				asteroids[i].pos.x = asteroids[i].body.position.x;
+				asteroids[i].pos.y = asteroids[i].body.position.y;	
+				fireworks.push(new Firework(asteroids[j].pos.x, asteroids[j].pos.y));
+				
 				
 				if (asteroids[i].split) {
-					//console.log('body', asteroids[i].body.position);
-					//console.log('this.pos', asteroids[i].pos);
-					asteroids[i].pos.x = asteroids[i].body.position.x;
-					asteroids[i].pos.y = asteroids[i].body.position.y;
-					
 					World.remove(engine.world, asteroids[i].body);
 					var newAsteroids = asteroids[i].breakup();								
 					asteroids = asteroids.concat(newAsteroids);

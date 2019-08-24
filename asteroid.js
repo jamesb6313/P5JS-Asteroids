@@ -82,6 +82,7 @@ class Asteroid {
 	breakup() {
 		
 		var pos = this.pos.copy();
+		//fireworks.push(new Firework(pos.x, pos.y));
 		var cr = 1;
 		var oldR = this.r;
 		
