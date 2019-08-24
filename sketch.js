@@ -13,7 +13,8 @@ const {
 } = Matter;
 
 var ship;
-var mybox;
+var stations = [];
+let numStations = 1;
 var asteroids = [];
 let numAsteroids = 1;
 let maxAsteroids = 7;
@@ -34,6 +35,9 @@ let time = 0;
 let timeSec = 0;
 let timeMin = 0;
 let gameTimeScale = 1;
+let gameLevel = 1;
+let gameStage = 1;
+
 
 let world, engine;
 let p5DeltaT,p5Time;
@@ -57,9 +61,9 @@ function setup() {
 	
 	addEvents(engine);
 	ship = new Ship(width/2,height/2, shipRadius, 0);	
-	mybox = new Box(width - 100, height / 2, 50, 50);
 	
-
+	stations.push(new Station(width - 100, height / 2, 50, 50));
+	
 	for (var i = 0; i < numAsteroids; i++) {
 		asteroids.push(new Asteroid());
 		//console.log(asteroids[i]);
@@ -72,8 +76,16 @@ function draw() {
 	background(0);
 		
 	if (gamePause) {
+		gameLevel++;
+		
 		deltaTime = 0;
 		p5DeltaT = 0;
+		//console.log('check health ', stations[0].health);
+		if (stations.length == 0) {
+			for (var i = 0; i < numStations; i++) {
+				stations.push(new Station(width - 100, height / 2, 50, 50));				
+			}
+		}
 	}
 
 	
@@ -146,7 +158,9 @@ function draw() {
 	laserEndCycle();
 	laserFire();
 
-	mybox.show();
+	if (stations[0]) {
+		stations[0].show();
+	}
 	ship.edges();
 	ship.show();
 	healthBar();

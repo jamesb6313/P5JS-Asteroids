@@ -170,22 +170,23 @@ function setHUD() {
 	timeSec = p5Time / 1000;
 	//timeMin = timeSec / 60;
 	//timeSec = timeSec % 60;
+	let totalTime = engine.timing.timestamp / 1000;
 		
 	let display =  
 	'<table> ' +
-		'<tr> <td>&nbsp;m_t:</td>  <td>' 
-			+ engine.timing.timestamp.toFixed(0) + '</td> </tr>' + 
-		'<tr> <td>&nbsp;p5t:</td>  <td>' 
-			+ p5Time.toFixed(0) + '</td> </tr>' + 
-		'<tr> <td style="color:#77f;">&nbsp;x:</td>    <td>' 
-			+ ship.body.position.x.toFixed(0) + '</td> </tr>' +
-		'<tr> <td style="color:#77f;">&nbsp;y:</td>    <td>' 
-			+ ship.body.position.y.toFixed(0) + '</td> </tr>' +
-		'<tr> <td style="color:#0dd;">Asteroids:</td>   <td>' 
+		'<tr> <td>&nbsp;Total Time:</td>  <td>' 
+			+ totalTime.toFixed(0) + '</td> </tr>' + 
+		'<tr> <td>&nbsp;Level Time:</td>  <td>' 
+			+ timeSec.toFixed(0) + '</td> </tr>' + 
+		'<tr> <td style="color:255;">&nbsp;Game Level:</td>    <td>' 
+			+ gameLevel + '</td> </tr>' +
+		'<tr> <td style="color:255;">&nbsp;Game Stage:</td>    <td>' 
+			+ gameStage + '</td> </tr>' +
+		'<tr> <td style="color:100;">&nbsp;Asteroids Left:</td>   <td>' 
 			+ asteroids.length + '</td> </tr>' +
-		'<tr> <td style="color:#0dd;">Shooting %:</td>   <td>' 
+		'<tr> <td style="color:100;">&nbsp;Shooting %:</td>   <td>' 
 			+ shootingAverage.toFixed(2) + '</td> </tr>' +
-		'<tr> <td style="color:#d0d;">H :</td>   <td>' 
+		'<tr> <td style="color:#d0d;">&nbsp;Health :</td>   <td>' 
 			+ ship.health.toFixed(2) + '</td> </tr>' +
 	'</table>';
 	
