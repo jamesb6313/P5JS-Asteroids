@@ -54,8 +54,8 @@ function keyPressed() {
 		ship.boost();
 	}
 }
-
-/* function keyIsDown() {		//try again used KeyDown() before and s/b KeyIsDown
+/* 
+function keyIsDown() {
 	if (keyCode == RIGHT_ARROW) {
 		ship.setRotation(0.01);
 	} else if (keyCode == LEFT_ARROW) {
@@ -152,6 +152,28 @@ function drawStopButton() {
 	pop();
 }
 
+function disTimeMinSec(t) {
+	let disTime = 0;
+	if (t > 60) {
+		let timeMin = floor(timeSec / 60);
+		let remainingSec = floor(timeSec % 60);
+		//console.log(remainingSec);
+		if (remainingSec > 0 && remainingSec < 10) {
+			remainingSec = '0' + remainingSec;
+		}
+		
+		disTime = timeMin + ' : ' +
+			remainingSec;
+	} else {
+		t = floor(t);
+/* 		if (t > 0 && t < 10) {
+			t = '0' + t;
+		} */
+		disTime = t;
+	}
+	return disTime;
+}
+
 function setHUD() {	
 
 	let shootingAverage;
@@ -165,13 +187,13 @@ function setHUD() {
 	healthPct = (1 - ship.health) * 100;
 	
 	timeSec = p5Time / 1000;
-	//timeMin = timeSec / 60;
-	//timeSec = timeSec % 60;
+	let disLevelTime = disTimeMinSec(timeSec);		
+	
 	let totalTime = engine.timing.timestamp / 1000;
+	let disGameTime = disTimeMinSec(totalTime);
 	
-	
-	domGameTime.html(totalTime.toFixed(0));
-	domLevelTime.html(timeSec.toFixed(0));;
+	domGameTime.html(disGameTime);
+	domLevelTime.html(disLevelTime);
 	domGameLevel.html(gameLevel);
 	domGameStage.html(gameStage);
 	domAsteroidsLeft.html(asteroids.length);
@@ -192,7 +214,10 @@ function setCanvasDisplay() {
 	fill(255);
 	text('Score: ' + score, 10, 50);
 	text('Shots Fired: ' + shots, 250, 50);
+	
+	timeSec = p5Time / 1000;
+	let disLevelTime = disTimeMinSec(timeSec);	
 	noStroke();
 	fill(255,0,0);
-	text('Time: ' + timeSec.toFixed(2), 550, 50);
+	text('Time: ' + disLevelTime, 550, 50);
 }

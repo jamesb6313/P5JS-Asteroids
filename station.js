@@ -51,14 +51,16 @@ class Station {
 	}
 	
 	explode(idx) {
-		let posX = stations[idx].x;
-		let posY = stations[idx].y;
 		
+		console.log(this.x, this.y);
 		
-		for (let i = 0; i < 5; i++) {
-			//let r = random(1, 4);
+		for (let i = 0; i < 15; i++) {
+			let offsetX = random(this.x - this.w/2, this.x + this.w/2);
+			let offsetY = random(this.y - this.h/2, this.y + this.h/2);
 			
-			fireworks.push(new Firework(posX + (i * 5), posY + (i * 5)));			
+			console.log(offsetX, offsetY);
+			
+			fireworks.push(new Firework(offsetX, offsetY));			
 		}
 		
 		//remove p5 station from array - body removed in addEvents collisionEnd

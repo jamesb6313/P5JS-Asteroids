@@ -23,7 +23,7 @@
 		body {padding: 0; margin: 0;} 
 
 		table { 
-			background-image: url('starfield2.jpg');
+			background-image: url('starfield.jpg');
 			width:800px;
 			table-layout: fixed;
 			
@@ -42,7 +42,9 @@
 		}
 			
 		button {
-			background-color: #D3D3D3;
+			background-color: OrangeRed;
+			width: 100%;
+			opacity: 0.5;
 			color: black;
 			border: none;
 			padding: 5px 15px;
@@ -57,16 +59,16 @@
 			position:relative;
 			margin: 0px;
 			padding:0px;
-			background-color:green;
+			background-color: aqua;
 		}
 		#bar{
-			background-color:red;
+			background-color: lime;
 			width:0%;	/* change this to change fill width */
 			height:20px;
 			transition:width 150ms;
 		}
 		#percent{
-			color: blue;
+			color: OrangeRed;
 			position:absolute;
 			display:inline-block;
 			top:3px;
@@ -79,40 +81,59 @@
 			
 			<div id="HUD">
 				<table>
-					<tr> <td colspan='2' style='color: Peru'>
-						<strong>GAME STATISTICS</strong>
-						<button id="gameStop" type="button">Stop Game</button>
-						</td> 
+					<tr>
+						<td colspan='2' style='color: Peru'>
+							<strong>GAME STATISTICS</strong>
+						</td>
+						<td rowspan='8' style='color:lime' >
+							Use Right and Left Arrows to rotate Ship</br></br>
+							Use Up Arrow for forward movement</br></br>
+							Use Space Bar to fire Laser Balls
+						</td>
+						<td colspan='2'>
+							<button id="gameStop" type="button">Stop Game</button>
+						</td>
 					</tr>
 				
 					<tr> 
 						<td>Total Time</td>  
 						<td id="gameTime"></td>
+						<td colspan='2'>Stage Targets</td>
 					</tr>
 					
 					<tr> 
 						<td>Level Time</td>
 						<td id="levelTime"></td>
+						<td>level time</td> 
+						<td>< 60</td> 
 					</tr>
 					
 					<tr> 
 						<td>Game Level</td>
 						<td id="gameLevel"></td> 
+						<td></td> 
+						<td></td>
 					</tr>
 					
 					<tr> 
 						<td>Game Stage</td>    
 						<td id="gameStage"></td> 
+						<td></td> 
+						<td></td>
 					</tr>
 					
 					<tr> 
 						<td>Asteroids Left</td>
 						<td id="asteroidsLeft"></td>
+						<td></td> 
+						<td></td>
 					</tr>
 					
 					<tr> 
 						<td>Shooting %</td>
 						<td id="shootingPercent"></td>
+						<td>shooting accuracy</td> 
+						<td>> 75%</td> 
 					</tr>
 					
 					<tr> <td>Health % </td>
@@ -122,6 +143,8 @@
 								<div id="percent"></div >
 							</div>
 						</td> 
+						<td>percent healthly</td> 
+						<td>> 75</td>
 					</tr>
 					
 				</table>	
