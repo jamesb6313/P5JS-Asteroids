@@ -7,11 +7,14 @@ class Station {
 		
 		const options = {
 		  restitution: 0.5,
-		  isStatic: true,
+		  //density: 0.1,	no effect	//default is 0.001, mass gets calculated
+		  isStatic: true,  //can't dampen movement, body & p5 pos not equal, needs edges()
+		  //isSensor: true,
 		  label: "station"
 		}    
 		this.body = Matter.Bodies.rectangle(x, y, w, h, options);
 		Body.setMass(this.body, this.body.mass*4);
+		//Body.setDensity(this.body, 100);
 
 		let group = Body.nextGroup(false);			 //to get a non-colliding group, then set 
 		this.body.collisionFilter.group = group;
@@ -48,9 +51,17 @@ class Station {
 	}
 	
 	explode(idx) {
-		//console.log('station explode',stations[idx].x)
-		fireworks.push(new Firework(stations[idx].x, stations[idx].y));
-		//console.log('firework created');
+		let posX = stations[idx].x;
+		let posY = stations[idx].y;
+		
+		
+		for (let i = 0; i < 5; i++) {
+			//let r = random(1, 4);
+			
+			fireworks.push(new Firework(posX + (i * 5), posY + (i * 5)));			
+		}
+		
+		//remove p5 station from array - body removed in addEvents collisionEnd
 		stations.splice(idx, 1);
 		
 		this.clr = 255;

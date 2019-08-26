@@ -74,20 +74,6 @@ class Ship {
 		this.isRotating = a;
 		Body.rotate(this.body, this.isRotating);
 	}
-  
-/*   	hits(asteroid) {
-		//use p5.lerp function to increment green to red transition
-		var d = dist(this.pos.x, this.pos.y, asteroid.pos.x, asteroid.pos.y);
-		var range = this.forceField ? this.r +  50 : this.r;
-
-		if (d < range + asteroid.r) {
-			this.health -= deltaHealth;
-			return true;
-		} else {
-			return false;
-		}			
-
-	} */
 	
 	edges() {
 		var nx = 0; 

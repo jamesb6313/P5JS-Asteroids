@@ -17,7 +17,7 @@ class Laser {
 			label: "laser"
 		}
 		this.body = Bodies.circle(x, y, this.r, options);
-		Body.setMass(this.body, this.body.mass);
+		Body.setMass(this.body, this.body.mass * 0.01);
 		
 		//let group = Body.nextGroup();
 		//this.body.collisionFilter.group = group;

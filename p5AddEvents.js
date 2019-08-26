@@ -39,7 +39,7 @@ function keyPressed() {
 		rapid = true;
 		rapidStart = 0;
 		rapidStart = loopCtr;
-		ship.setRotation(1);
+		ship.setRotation(0.1);
 		ship.boosting(false);
 		lasers.push(new Laser(ship));
 		shots++;
@@ -47,13 +47,21 @@ function keyPressed() {
 		lasers.push(new Laser(ship));
 		shots++;
 	} else if (keyCode == RIGHT_ARROW) {
-		ship.setRotation(0.04);
+		ship.setRotation(0.03);
 	} else if (keyCode == LEFT_ARROW) {
-		ship.setRotation(-0.04);
+		ship.setRotation(-0.03);
 	} else if (keyCode == UP_ARROW) {
 		ship.boost();
 	}
 }
+
+/* function keyIsDown() {		//try again used KeyDown() before and s/b KeyIsDown
+	if (keyCode == RIGHT_ARROW) {
+		ship.setRotation(0.01);
+	} else if (keyCode == LEFT_ARROW) {
+		ship.setRotation(-0.01);
+	}
+} */
 
 function testContinue(x, y) {
 	// rect((width / 2) - 100, (height / 2), 100, 50, 20);
@@ -62,18 +70,14 @@ function testContinue(x, y) {
 	let cont = false;
 	
 	if (x > (width / 2) - 150) {
-		//console.log('Here1a', (width / 2) - 100);
 		if (x < (width / 2) - 50) {
 			nx = 1;
-			//console.log('Here1b',(width / 2) + 100);
 		}
 	}
 
 	if (y > (height/2) - 25) {
-		//console.log('Here2a', (height/2) - 25, (height/2) + 25);
 		if (y < (height/2) + 25) {
 			ny = 1;
-			//console.log('Here2b');
 		}
 	}
 
@@ -91,18 +95,14 @@ function testStop(x, y) {
 	let cont = false;
 	
 	if (x > (width / 2) + 50) {
-		//console.log('Here1a', (width / 2) - 100);
 		if (x < (width / 2) + 150) {
 			nx = 1;
-			//console.log('Here1b',(width / 2) + 100);
 		}
 	}
 
 	if (y > (height/2) - 25) {
-		//console.log('Here2a', (height/2) - 25, (height/2) + 25);
 		if (y < (height/2) + 25) {
 			ny = 1;
-			//console.log('Here2b');
 		}
 	}
 
@@ -111,11 +111,6 @@ function testStop(x, y) {
 	}	
 	
 	return cont;
-}
-
-function stopGame() {
-	noLoop();
-	p5Time = 0;
 }
 
 function restartSim() {
@@ -158,8 +153,7 @@ function drawStopButton() {
 }
 
 function setHUD() {	
-	//console.log(asteroids.length);
-	
+
 	let shootingAverage;
 	if (shots != 0) {
 		shootingAverage = (score / shots) * 100;
@@ -167,58 +161,31 @@ function setHUD() {
 		shootingAverage = 0;
 	}
 	
+	let healthPct = 0;	//want remaining health 1 - x
+	healthPct = (1 - ship.health) * 100;
+	
 	timeSec = p5Time / 1000;
 	//timeMin = timeSec / 60;
 	//timeSec = timeSec % 60;
 	let totalTime = engine.timing.timestamp / 1000;
-		
-	let display =  
-	'<table> ' +
-		'<tr> <td>&nbsp;Total Time:</td>  <td>' 
-			+ totalTime.toFixed(0) + '</td> </tr>' + 
-		'<tr> <td>&nbsp;Level Time:</td>  <td>' 
-			+ timeSec.toFixed(0) + '</td> </tr>' + 
-		'<tr> <td style="color:255;">&nbsp;Game Level:</td>    <td>' 
-			+ gameLevel + '</td> </tr>' +
-		'<tr> <td style="color:255;">&nbsp;Game Stage:</td>    <td>' 
-			+ gameStage + '</td> </tr>' +
-		'<tr> <td style="color:100;">&nbsp;Asteroids Left:</td>   <td>' 
-			+ asteroids.length + '</td> </tr>' +
-		'<tr> <td style="color:100;">&nbsp;Shooting %:</td>   <td>' 
-			+ shootingAverage.toFixed(2) + '</td> </tr>' +
-		'<tr> <td style="color:#d0d;">&nbsp;Health :</td>   <td>' 
-			+ ship.health.toFixed(2) + '</td> </tr>' +
-	'</table>';
 	
-	divHUD.html(display);
+	
+	domGameTime.html(totalTime.toFixed(0));
+	domLevelTime.html(timeSec.toFixed(0));;
+	domGameLevel.html(gameLevel);
+	domGameStage.html(gameStage);
+	domAsteroidsLeft.html(asteroids.length);
+	domShootingPercent.html(shootingAverage.toFixed(2));
+	domShipsHealthBar.style('width: ' + healthPct.toFixed(0) + '%');
+	domShipsHealthVal.html(healthPct.toFixed(2) + '%');
 }
 
-function setDomElements() {
-	
-	//create progress bar
-	divHealth = select("#Health");	
-	divHealthBar = select("#HealthBar");
-
-	divHealth.position(0, height + 10);
-	divHealthBar.position(0, height + 10);
-	divHealth.style('background-color', color(200) );
-	divHealthBar.style('background-color', color(255,0,0) );
-	divHealthBar.style('text-align', 'center');
-		
-	//create HUD
-	var pos = divHealth.position();
-	divHUD = createDiv("").size(300,160); 	
-	divHUD.position(0, pos.y + 30);
-	divHUD.style('background-color', color(0,255,0) );
-	
-	//create stop button
-	btnStop = createButton("Stop");
-	btnStop.position(300 + 10, pos.y);
-	btnStop.style('position:absolute');		
-	btnStop.mousePressed(stopGame);
+//DOM stop button callback
+function stopGame() {
+	noLoop();
+	p5Time = 0;
 }
 
-/////////
 function setCanvasDisplay() {
 	textSize(32);
 	noStroke();

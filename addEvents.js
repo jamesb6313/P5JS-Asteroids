@@ -87,6 +87,7 @@ function addEvents(e) {
 					hitMass = 10;
 				}
 				console.log('stations.length = ', stations.length);
+				console.log(a,b);
 				///
 				for (var j = stations.length - 1; j >= 0; j--) {
 					if (a.id == stations[j].id) {
@@ -299,6 +300,7 @@ function addEvents(e) {
 				lasers.splice(i, 1);
 			}
 		} 
+		
 		
 	});
 }

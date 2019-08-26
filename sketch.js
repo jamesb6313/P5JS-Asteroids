@@ -26,6 +26,15 @@ var rapidStart = 0;
 var loopCtr = 0;
 let shipRadius = 30;
 let minAsteroidRadius = 15;		//line48 addEvents.js
+
+let domGameStop;
+let domGameTime;
+let domLevelTime;
+let domGameLevel;
+let domGameStage;
+let domAsteroidsLeft;
+let domShootingPercent;
+let domshipsHealth;
 var divHUD,divHealth,divHealthBar;
 var btnStop;
 
@@ -55,8 +64,6 @@ function setup() {
 		
 	world.gravity.y = 0;
 	world.gravity.x = 0;
-	
-	setDomElements();
 		
 	// set game variables
 	p5Time = 0;	
@@ -68,11 +75,21 @@ function setup() {
 	
 	for (var i = 0; i < numAsteroids; i++) {
 		asteroids.push(new Asteroid());
-		//console.log(asteroids[i]);
-		//Body.setVelocity(asteroids[i].body, {x: asteroids[i].vel.x, y: asteroids[i].vel.y} );
-		
 	}
 	
+	//get DOM elements for displaying Game Statistics
+	domGameStop = select('#gameStop');
+	domGameStop.mouseReleased(stopGame);
+	
+	domGameTime = select('#gameTime');
+	domLevelTime = select('#levelTime');
+	domGameLevel = select('#gameLevel');
+	domGameStage = select('#gameStage');
+	domAsteroidsLeft = select('#asteroidsLeft');
+	domShootingPercent =select('#shootingPercent');
+	domShipsHealthBar = select('#bar');
+	domShipsHealthVal = select('#percent');
+
 }
 
 function draw() {
@@ -168,7 +185,7 @@ function draw() {
 	ship.show();
 	
 	for (var i = fireworks.length - 1; i >= 0; i--) {
-		console.log('fireworks.length', fireworks.length);
+		//console.log('fireworks.length', fireworks.length);
 		
 		fireworks[i].update();
 		fireworks[i].show();
@@ -176,9 +193,6 @@ function draw() {
 			fireworks.splice(i, 1);
 		}		
 	}
-	
-	healthBar();
-
 }
 
 function laserFire() {
@@ -191,16 +205,4 @@ function laserEndCycle() {
 	for (var i = lasers.length - 1; i >= 0; i--) {
 		lasers[i].offscreen();
 	}
-}
-
-//ship health bar
-function healthBar() {
-	var percent = 1 - ship.health;	
-	var newWidth = floor((300 * percent) );
-	
-	if (newWidth > 300) {
-		newWidth = 300;
-	}
-
-	divHealthBar.style('width', newWidth + 'px');
 }
