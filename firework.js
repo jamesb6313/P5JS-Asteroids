@@ -1,10 +1,11 @@
-function Firework(x,y) {
+function Firework(x,y,numParticles) {
 	this.x = x;
 	this.y = y;
 	this.hu = random(255);
 	this.firework = new Particle(this.x, this.y, true, this.hu);
 	this.exploded = false;
 	this.particles = [];
+	this.numParticles = numParticles;
 	
 	this.done = function() {
 		if (this.exploded && this.particles.length ===0) {
@@ -37,7 +38,7 @@ function Firework(x,y) {
 	}
 	
 	this.explode = function() {
-		for (var i = 0; i < 100; i++) {
+		for (var i = 0; i < this.numParticles; i++) {
 			var p = new Particle(this.firework.pos.x,this.firework.pos.y, false, this.hu);
 			
 /* 			var x = floor(100+ i);

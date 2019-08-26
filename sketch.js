@@ -185,7 +185,7 @@ function draw() {
 	ship.show();
 	
 	for (var i = fireworks.length - 1; i >= 0; i--) {
-		//console.log('fireworks.length', fireworks.length);
+		//console.log('fireworks.length', fireworks);
 		
 		fireworks[i].update();
 		fireworks[i].show();

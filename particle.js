@@ -13,7 +13,7 @@ function Particle(x,y,firework,hu) {
 	this.acc = createVector(0,0);
 	//this.maxspeed = 2;
 	
-	//this.prevPos = this.pos.copy();
+	this.prevPos = this.pos.copy();
 	
 	this.update = function() {
 		if (!this.firework) {
@@ -53,7 +53,7 @@ function Particle(x,y,firework,hu) {
 		//to make bigger use ellipse()
 		let r = random(1, 4);
 		ellipse(this.pos.x, this.pos.y, r);
-		//point(this.pos.x, this.pos.y);
+		line(this.pos.x, this.pos.y,this.prevPos.x, this.prevPos.y);
 	}
 	
 }

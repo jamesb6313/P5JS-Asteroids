@@ -52,16 +52,16 @@ class Station {
 	
 	explode(idx) {
 		
-		console.log(this.x, this.y);
+		//console.log(this.x, this.y);
 		
-		for (let i = 0; i < 15; i++) {
-			let offsetX = random(this.x - this.w/2, this.x + this.w/2);
-			let offsetY = random(this.y - this.h/2, this.y + this.h/2);
+		//for (let i = 0; i < 15; i++) {
+		let offsetX = random(this.x - this.w/2, this.x + this.w/2);
+		let offsetY = random(this.y - this.h/2, this.y + this.h/2);
 			
-			console.log(offsetX, offsetY);
-			
-			fireworks.push(new Firework(offsetX, offsetY));			
-		}
+		//console.log(offsetX, offsetY);
+		let numP = floor(random(200, 400));
+		fireworks.push(new Firework(offsetX, offsetY, numP));			
+		//}
 		
 		//remove p5 station from array - body removed in addEvents collisionEnd
 		stations.splice(idx, 1);

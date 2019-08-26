@@ -13,11 +13,11 @@ function addEvents(e) {
 			//ship collisions
 			if (a.label == 'ship') {
 				var hitMass = 1;
-				if (b.mass >= 5) {
-					hitMass = 5;
+				if (b.mass >= 10) {
+					hitMass = 10;
 				}
 				if (b.mass < 0.1) {
-					hitMass = 0.1;
+					hitMass = 1;
 				}
 				
 				ship.health -= (ship.deltaHealth * hitMass);
@@ -25,11 +25,11 @@ function addEvents(e) {
 			} else {
 				if (b.label == 'ship') {
 					var hitMass = 1;
-					if (a.mass >= 5) {
-						hitMass = 5;
+					if (a.mass >= 10) {
+						hitMass = 10;
 					}
 					if (a.mass < 0.1) {
-						hitMass = 0.1;
+						hitMass = 1;
 					}
 				
 					ship.health -= (ship.deltaHealth * hitMass);	
@@ -43,8 +43,7 @@ function addEvents(e) {
 					score++;
 					for (var j = asteroids.length - 1; j >= 0; j--) {
 						if (a.id == asteroids[j].id) {
-							
-							
+
 							if (a.circleRadius >= minAsteroidRadius) {
 								asteroids[j].split = true;
 							}
@@ -77,14 +76,14 @@ function addEvents(e) {
 			if (a.label == 'station') {
 				console.log('a - station hit');
 				var hitMass = 1;
-				if (b.mass >= 5) {
-					hitMass = 5;
+				if (b.mass >= 10) {
+					hitMass = 10;
 				}
 				if (b.mass < 0.1) {
-					hitMass = 0.1;
+					hitMass = 1;
 				}
 				if (b.label == 'laser') {
-					hitMass = 10;
+					hitMass = 5;
 				}
 				console.log('stations.length = ', stations.length);
 				console.log(a,b);
@@ -105,14 +104,14 @@ function addEvents(e) {
 				if (b.label == 'station') {
 					console.log('b - station hit');
 					var hitMass = 1;
-					if (a.mass >= 5) {
-						hitMass = 5;
+					if (a.mass >= 10) {
+						hitMass = 10;
 					}
 					if (a.mass < 0.1) {
-						hitMass = 0.1;
+						hitMass = 1;
 					}
 					if (a.label == 'laser') {
-						hitMass = 10;
+						hitMass = 5;
 					}
 					console.log('b - station hit');
 					///
@@ -154,7 +153,8 @@ function addEvents(e) {
 				
 				asteroids[i].pos.x = asteroids[i].body.position.x;
 				asteroids[i].pos.y = asteroids[i].body.position.y;	
-				fireworks.push(new Firework(asteroids[j].pos.x, asteroids[j].pos.y));
+				let numP = floor(random(50, 100));
+				fireworks.push(new Firework(asteroids[j].pos.x, asteroids[j].pos.y, numP));
 				
 				
 				if (asteroids[i].split) {
@@ -183,11 +183,11 @@ function addEvents(e) {
 			
 			//ship collisions
 			if (a.label == 'ship') {
-				ship.health -= (ship.deltaHealth * 0.05);				
+				ship.health -= (ship.deltaHealth * 0.25);				
 				ship.changeColor();
 			} else {
 				if (b.label == 'ship') {
-					ship.health -= (ship.deltaHealth * 0.05);					
+					ship.health -= (ship.deltaHealth * 0.25);					
 					ship.changeColor();
 				}
 			}
@@ -195,7 +195,6 @@ function addEvents(e) {
 			//station collisions
 			if (a.label == 'station') {
 				///
-				console.log('a - station hit active');
 				let hitMass = 0.1;
 				for (var j = stations.length - 1; j >= 0; j--) {
 					if (a.id == stations[j].id) {
@@ -213,7 +212,6 @@ function addEvents(e) {
 			} else {
 				if (b.label == 'station') {	
 					let hitMass = 0.1;
-					console.log('b - station hit active');
 					///
 					for (var j = stations.length - 1; j >= 0; j--) {
 						if (b.id == stations[j].id) {
@@ -258,7 +256,7 @@ function addEvents(e) {
 				for (var j = stations.length - 1; j >= 0; j--) {
  					if (a.id == stations[j].id && stations[j].health <= 0) {
 						//
-						ship.health += ship.health; //double health
+						ship.health += 0.25; //double health
 						ship.health = (ship.health > 1) ? 1 : ship.health;
 						ship.changeColor();
 						
@@ -272,11 +270,11 @@ function addEvents(e) {
 					console.log('b - station collision End');
 					for (var j = stations.length - 1; j >= 0; j--) {
 						if (b.id == stations[j].id && stations[j].health <= 0) {
-							ship.health += ship.health; //double health
+							ship.health += 0.25; //double health
 							ship.health = (ship.health > 1) ? 1 : ship.health;
 							ship.changeColor();
 							
-							World.remove(engine.world, station[j].body);
+							World.remove(engine.world, stations[j].body);
 							stations[j].explode(j);
 							break;
 						}

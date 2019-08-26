@@ -61,7 +61,13 @@ function keyIsDown() {
 	} else if (keyCode == LEFT_ARROW) {
 		ship.setRotation(-0.01);
 	}
-} */
+} 
+
+//DO SOMETHING 99% of the time
+	var r = random(100);
+	if (r < 1) {
+	}
+*/
 
 function testContinue(x, y) {
 	// rect((width / 2) - 100, (height / 2), 100, 50, 20);
@@ -155,8 +161,8 @@ function drawStopButton() {
 function disTimeMinSec(t) {
 	let disTime = 0;
 	if (t > 60) {
-		let timeMin = floor(timeSec / 60);
-		let remainingSec = floor(timeSec % 60);
+		let timeMin = floor(t / 60);
+		let remainingSec = floor(t % 60);
 		//console.log(remainingSec);
 		if (remainingSec > 0 && remainingSec < 10) {
 			remainingSec = '0' + remainingSec;
@@ -184,7 +190,7 @@ function setHUD() {
 	}
 	
 	let healthPct = 0;	//want remaining health 1 - x
-	healthPct = (1 - ship.health) * 100;
+	healthPct = (ship.health) * 100;
 	
 	timeSec = p5Time / 1000;
 	let disLevelTime = disTimeMinSec(timeSec);		
