@@ -1,8 +1,7 @@
 function Firework(x,y,numParticles) {
 	this.x = x;
 	this.y = y;
-	this.hu = random(255);
-	this.firework = new Particle(this.x, this.y, true, this.hu);
+	this.firework = new Particle(this.x, this.y, true);
 	this.exploded = false;
 	this.particles = [];
 	this.numParticles = numParticles;
@@ -18,7 +17,6 @@ function Firework(x,y,numParticles) {
 	this.update = function() {
 		
 		if (!this.exploded) {
-			//this.firework.applyForce(gravity);
 			this.firework.update();
 			
 			//if (this.firework.vel.y >= 0) {
@@ -28,7 +26,6 @@ function Firework(x,y,numParticles) {
 		}
 		
 		for (var i = this.particles.length - 1; i >= 0 ; i--) {
-			//this.particles[i].applyForce(gravity);
 			this.particles[i].update();
 			if (this.particles[i].done()) {
 				this.particles.splice(i , 1);
@@ -39,13 +36,7 @@ function Firework(x,y,numParticles) {
 	
 	this.explode = function() {
 		for (var i = 0; i < this.numParticles; i++) {
-			var p = new Particle(this.firework.pos.x,this.firework.pos.y, false, this.hu);
-			
-/* 			var x = floor(100+ i);
-			var y = floor(this.firework.pos.y);
-			console.log(x,y);
-			p.vel = createVector(x, y);
-			p.vel.mult(random(-0.05,0.05)); */
+			var p = new Particle(this.firework.pos.x,this.firework.pos.y, false);
 			
 			this.particles.push(p);
 		}

@@ -11,7 +11,6 @@ function mousePressed() {
 			asteroids.push(new Asteroid());
 		}
 		setHUD();
-		//setDomElements()();
 
 		setTimeout(restartSim, 2000);
 		
@@ -98,7 +97,7 @@ function testStop(x, y) {
 	//rect((width / 2) + 100, (height / 2), 100, 50, 20);	
 	let nx = 0; 
 	let ny = 0;
-	let cont = false;
+	let stop = false;
 	
 	if (x > (width / 2) + 50) {
 		if (x < (width / 2) + 150) {
@@ -113,10 +112,10 @@ function testStop(x, y) {
 	}
 
 	if (ny != 0 && nx != 0) {
-		cont = true;
+		stop = true;
 	}	
 	
-	return cont;
+	return stop;
 }
 
 function restartSim() {
@@ -163,7 +162,7 @@ function disTimeMinSec(t) {
 	if (t > 60) {
 		let timeMin = floor(t / 60);
 		let remainingSec = floor(t % 60);
-		//console.log(remainingSec);
+
 		if (remainingSec > 0 && remainingSec < 10) {
 			remainingSec = '0' + remainingSec;
 		}
@@ -189,7 +188,7 @@ function setHUD() {
 		shootingAverage = 0;
 	}
 	
-	let healthPct = 0;	//want remaining health 1 - x
+	let healthPct = 0;
 	healthPct = (ship.health) * 100;
 	
 	timeSec = p5Time / 1000;
@@ -203,8 +202,11 @@ function setHUD() {
 	domGameLevel.html(gameLevel);
 	domGameStage.html(gameStage);
 	domAsteroidsLeft.html(asteroids.length);
-	domShootingPercent.html(shootingAverage.toFixed(2));
-	domShipsHealthBar.style('width: ' + healthPct.toFixed(0) + '%');
+	
+	domShootingBar.style('width: ' + shootingAverage.toFixed(0) + '%;');
+	domShootingVal.html(shootingAverage.toFixed(2) + '%');
+	
+	domShipsHealthBar.style('width: ' + healthPct.toFixed(0) + '%;');
 	domShipsHealthVal.html(healthPct.toFixed(2) + '%');
 }
 

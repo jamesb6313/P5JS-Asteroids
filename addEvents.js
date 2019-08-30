@@ -1,4 +1,6 @@
 function addEvents(e) {
+
+
 	// an example of using collisionStart event on an engine
 	Events.on(e, 'collisionStart', function(event) {
 		var pairs = event.pairs;
@@ -144,7 +146,7 @@ function addEvents(e) {
 		
 		//Extra processing to remove old Asteroids and
 		//to split Asteroids upon hit
-		//
+
 		//coded here to avoid creating asteroids 
 		//on top of each other
 		for (var i = asteroids.length - 1; i >= 0; i--) {
@@ -155,8 +157,15 @@ function addEvents(e) {
 				asteroids[i].pos.y = asteroids[i].body.position.y;	
 				let numP = floor(random(50, 100));
 				fireworks.push(new Firework(asteroids[j].pos.x, asteroids[j].pos.y, numP));
+				///
 				
+				//var dustVel = p5.Vector.add(lasers[i].vel.mult(0.2), asteroids[j].body.velocity);
+				/* var dustVel = p5.Vector.random2D();
+				dustVel.mult(2);
+				var dustNum = (asteroids[j].r + 1) * 5;
+				addDust(asteroids[j].pos, dustVel, dustNum); */
 				
+				///
 				if (asteroids[i].split) {
 					World.remove(engine.world, asteroids[i].body);
 					var newAsteroids = asteroids[i].breakup();								

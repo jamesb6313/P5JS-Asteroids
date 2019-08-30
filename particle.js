@@ -1,8 +1,7 @@
-function Particle(x,y,firework,hu) {
+function Particle(x,y,firework) {
 	this.pos = createVector(x,y);
 	this.firework = firework;
-	this.lifespan = random(20, 500);
-	this.hu = hu;
+	this.lifespan = random(20, 300);
 	
 	if (this.firework) {
 		this.vel = createVector(0 ,random(-11,-7));
@@ -42,18 +41,16 @@ function Particle(x,y,firework,hu) {
 	}
 	
 	this.show = function() {
-		//colorMode(HSB);
 		if (!this.firework) {
-			strokeWeight(2);
-			stroke(hu,255,255, this.lifespan);
+			strokeWeight(random(3,7));
+			stroke(0,255,255, this.lifespan);
 		} else {
-			stroke(hu,255,255);
+			stroke(0,255,255);
 			strokeWeight(4);
 		}
 		//to make bigger use ellipse()
 		let r = random(1, 4);
-		ellipse(this.pos.x, this.pos.y, r);
-		line(this.pos.x, this.pos.y,this.prevPos.x, this.prevPos.y);
+		ellipse(this.pos.x, this.pos.y, r);	
 	}
 	
 }

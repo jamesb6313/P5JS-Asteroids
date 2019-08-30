@@ -33,10 +33,12 @@ let domLevelTime;
 let domGameLevel;
 let domGameStage;
 let domAsteroidsLeft;
-let domShootingPercent;
-let domshipsHealth;
-var divHUD,divHealth,divHealthBar;
-var btnStop;
+
+let domShootingBar;
+let domShootingVal;
+
+let domShipsHealthBar;
+let domShipsHealthVal
 
 let score = 0;
 let shots = 0;
@@ -49,13 +51,12 @@ let gameStage = 1;
 
 let fireworks = [];
 
-
 let world, engine;
 let p5DeltaT,p5Time;
 let gamePause = false;
 	
 function setup() {
-	const canvas = createCanvas(800, 600); //(windowWidth, windowHeight);
+	const canvas = createCanvas(800, 500); //(windowWidth, windowHeight);
 
 	engine = Engine.create();
 	world = engine.world;
@@ -78,6 +79,9 @@ function setup() {
 	}
 	
 	//get DOM elements for displaying Game Statistics
+	domHUDtable = select('#HUDtable');
+	domHUDtable.position(0, height + 10);
+	
 	domGameStop = select('#gameStop');
 	domGameStop.mouseReleased(stopGame);
 	
@@ -86,9 +90,12 @@ function setup() {
 	domGameLevel = select('#gameLevel');
 	domGameStage = select('#gameStage');
 	domAsteroidsLeft = select('#asteroidsLeft');
-	domShootingPercent =select('#shootingPercent');
-	domShipsHealthBar = select('#bar');
-	domShipsHealthVal = select('#percent');
+	
+	domShootingBar =select('#barShooting');
+	domShootingVal =select('#perShooting');
+	
+	domShipsHealthBar = select('#barHealth');
+	domShipsHealthVal = select('#perHealth');
 
 }
 
@@ -185,7 +192,6 @@ function draw() {
 	ship.show();
 	
 	for (var i = fireworks.length - 1; i >= 0; i--) {
-		//console.log('fireworks.length', fireworks);
 		
 		fireworks[i].update();
 		fireworks[i].show();
@@ -193,6 +199,7 @@ function draw() {
 			fireworks.splice(i, 1);
 		}		
 	}
+  
 }
 
 function laserFire() {

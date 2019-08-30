@@ -65,6 +65,7 @@ class Asteroid {
 		translate(pos.x, pos.y);
 		rotate(bAngle);
 		noFill();
+		strokeWeight(1);
 		stroke(225);
 		circle(0, 0, this.body.circleRadius * 2, this.body.circleRadius * 2);
 		line(0, 0, this.body.circleRadius, 0);	//show angle		
