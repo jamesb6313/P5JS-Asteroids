@@ -1,7 +1,8 @@
 class Ship {
 
-	constructor(x, y, r, a) {
+	constructor(pos, r, angle) {
 		this.r = r;
+		this.pos = pos;
 		this.vertx = [];
 		this.deltaHealth = 0.01;
 		this.health = 1.0;
@@ -14,17 +15,12 @@ class Ship {
 			friction: 0.0,
 			frictionAir : 0.01,
 			restitution: 0.3,
-			angle: a,
+			angle: angle,
 			label: "ship"
 		}
-		
-		/* 		this.offset = [];		
-		for (var i = 0; i < this.total; i++) {
-			this.offset[i] = random(-this.r * 0.5, this.r * 0.5);
-		}*/
-			
-		console.log( { x: x, y: y } );
 
+		//Need vertices to be in clockwise order (see: Matter.js Bodies.fromVertices())
+		//relative to {0,0}
 		var x1 = (shipRadius)*cos(0);
 		var y1 = (shipRadius)*sin(0);		
 		this.vertx[0] = { x: x1, y: y1 };	//vertex(x,y)
@@ -35,23 +31,10 @@ class Ship {
 		y1 = (shipRadius)*sin(2*PI/3);		
 		this.vertx[2] = { x: x1, y: y1 };	//vertex(x,y)
 		
-/* 		for (var i = 1; i < 3; i++) {
-			//var tangle = map(i, 0, this.total, 0, TWO_PI);
-			var x1 = x + (shipRadius/2)*cos(PI)*i;
-			var y1 = y + (shipRadius/2)*sin(PI)*i;
-			vertx[i] = { x: x1, y: y1 };	//vertex(x,y)
-		} */
-		console.log(this.vertx);
-		
-		
-		this.body = Bodies.fromVertices(x, y, this.vertx, options);
-		
+		this.body = Bodies.fromVertices(this.pos.x, this.pos.y, this.vertx, options);		
 		//this.body = Bodies.circle(x, y, r, options);
 		Body.setMass(this.body, this.body.mass*4);
 		World.add(world, this.body);
-		
-		console.log( { x: x, y: y } );
-		console.log(this.body.position);
 		
 		let group = Body.nextGroup(false);
 		this.body.collisionFilter.group = group;

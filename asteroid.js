@@ -22,22 +22,38 @@ class Asteroid {
 		this.split = false
 		
 		
-		//this.total = random(5, 15);
+		this.total = floor(random(5, 15));
 		this.vel = p5.Vector.random2D();
 		this.vel.mult(2);
 
-/* 		this.offset = [];		
+		//Need vertices to be in clockwise order (see: Matter.js Bodies.fromVertices())
+ 		this.offset = [];		
 		for (var i = 0; i < this.total; i++) {
 			this.offset[i] = random(-this.r * 0.5, this.r * 0.5);
 		}
 			
-		let vertx = []
+		let vertx = [];
 		for (var i = 0; i < this.total; i++) {
 			var tangle = map(i, 0, this.total, 0, TWO_PI);
 			var x = (this.r + this.offset[i])*cos(tangle);
 			var y = (this.r + this.offset[i])*sin(tangle);
-			vertx[i] = vertex(x,y)
-		} */
+			vertx[i] = { x: x, y: y };
+		}
+		console.log(vertx);
+		
+		let reversed = [];
+		let j = 0;
+		for (var i = this.total - 1; i >= 0; i--) {
+			reversed[j] = vertx[i];
+			j++;
+		}
+		console.log(reversed);
+/* 		
+//array.reverse(); did not work 
+
+Array.prototype.reverse.call(vertx);
+		vertx.reverse();
+		console.log(vertx); */
 		
 		const options = {
 		    restitution: 0,
@@ -48,8 +64,8 @@ class Asteroid {
 		    label: bodyLabel
 		}
 		
-		//this.body = Bodies.fromVertices(this.pos.x, this.pos.y, vertx, options);
-		this.body = Bodies.circle(this.pos.x, this.pos.y, this.r, options);
+		this.body = Bodies.fromVertices(this.pos.x, this.pos.y, vertx, options);
+		//this.body = Bodies.circle(this.pos.x, this.pos.y, this.r, options);
 		Body.setMass(this.body, this.body.mass*4);
 		Body.setVelocity(this.body, {x: this.vel.x, y: this.vel.y} );
 		World.add(world, this.body);
@@ -67,23 +83,21 @@ class Asteroid {
 		noFill();
 		strokeWeight(1);
 		stroke(225);
-		circle(0, 0, this.body.circleRadius * 2, this.body.circleRadius * 2);
-		line(0, 0, this.body.circleRadius, 0);	//show angle		
- 		/* beginShape();
+		//circle(0, 0, this.body.circleRadius * 2, this.body.circleRadius * 2);
+		//line(0, 0, this.body.circleRadius, 0);	//show angle		
+ 		beginShape();
 		for (var i = 0; i < this.total; i++) {
 			var angle = map(i, 0, this.total, 0, TWO_PI);
 			var x = (this.r + this.offset[i])*cos(angle);
 			var y = (this.r + this.offset[i])*sin(angle);
 			vertex(x,y)
 		}
-		endShape(CLOSE); */
+		endShape(CLOSE);
 		pop();
 	}
 		
 	breakup() {
-		
 		var pos = this.pos.copy();
-		//fireworks.push(new Firework(pos.x, pos.y));
 		var cr = 1;
 		var oldR = this.r;
 		
@@ -100,6 +114,30 @@ class Asteroid {
 		//console.log('newA1 : ', pos);
 		newA[1] = new Asteroid(pos, cr, oldR );
 		return newA;
+	}
+	
+	scaleUp() {
+		//Need vertices to be in clockwise order (see: Matter.js Bodies.fromVertices())
+ 		this.offset = [];		
+		for (var i = 0; i < this.total; i++) {
+			this.offset[i] = random(-this.r * 0.5, this.r * 0.5);
+		}
+			
+		let vertx = [];
+		for (var i = 0; i < this.total; i++) {
+			var tangle = map(i, 0, this.total, 0, TWO_PI);
+			var x = (this.r + this.offset[i])*cos(tangle);
+			var y = (this.r + this.offset[i])*sin(tangle);
+			vertx[i] = { x: x, y: y };
+		}
+		
+		let reversed = [];
+		let j = 0;
+		for (var i = this.total - 1; i >= 0; i--) {
+			reversed[j] = vertx[i];
+			j++;
+		}
+		
 	}
 			
 	edges() {

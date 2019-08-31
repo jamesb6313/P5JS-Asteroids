@@ -45,8 +45,9 @@ function addEvents(e) {
 					score++;
 					for (var j = asteroids.length - 1; j >= 0; j--) {
 						if (a.id == asteroids[j].id) {
-
-							if (a.circleRadius >= minAsteroidRadius) {
+							
+							if ((asteroids[j].r * 0.5) >= minAsteroidRadius) {
+							//if (a.circleRadius >= minAsteroidRadius) {
 								asteroids[j].split = true;
 							}
 							asteroids[j].dead = true;
@@ -62,7 +63,8 @@ function addEvents(e) {
 						for (var j = asteroids.length - 1; j >= 0; j--) {
 							if (b.id == asteroids[j].id) {
 								
-								if (b.circleRadius >= 10) {
+								if ((asteroids[j].r * 0.5) >= minAsteroidRadius) {
+								//if (b.circleRadius >= minAsteroidRadius) {
 									asteroids[j].split = true;
 								}
 								asteroids[j].dead = true;							

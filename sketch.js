@@ -25,7 +25,7 @@ var removeAsteroids = false;
 var rapidStart = 0;
 var loopCtr = 0;
 let shipRadius = 30;
-let minAsteroidRadius = 15;		//line48 addEvents.js
+let minAsteroidRadius = 5;		//line48 addEvents.js
 
 let domGameStop;
 let domGameTime;
@@ -70,7 +70,8 @@ function setup() {
 	p5Time = 0;	
 	
 	addEvents(engine);
-	ship = new Ship(width/2,height/2, shipRadius, 0);	
+	let shipPos = createVector(width/2,height/2);
+	ship = new Ship(shipPos, shipRadius, 0);	
 	
 	stations.push(new Station(width - 100, height / 2, 50, 50));
 	
@@ -147,10 +148,11 @@ function draw() {
 				if (asteroids[i].body.label == 'asteroidDebris') {
 					Body.scale(asteroids[i].body, asteroids[i].parentR, asteroids[i].parentR);
 					asteroids[i].r = asteroids[i].parentR * 0.5;
-					asteroids[i].body.circleRadius = asteroids[i].r;
+					//asteroids[i].body.circleRadius = asteroids[i].r;
 					asteroids[i].body.label = 'asteroid';
+					asteroids[i].scaleUp();
 					asteroids[i].show();
-					//console.log('Debris', asteroids[i].body);
+					console.log('Debris', asteroids[i].body);
 				}
 			}
 			removeAsteroids = false;

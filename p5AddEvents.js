@@ -1,27 +1,28 @@
 // When the user clicks the mouse
 function mousePressed() {
 	// Check if mouse is inside the 
-	if (testContinue(mouseX, mouseY)) {
+	if (gamePause) {
+		if (testContinue(mouseX, mouseY)) {
 
-		numAsteroids++;
-		if (numAsteroids > maxAsteroids) {
-			numAsteroids = maxAsteroids;
-		}
-		for (var i = 0; i < numAsteroids; i++) {
-			asteroids.push(new Asteroid());
-		}
-		setHUD();
+			numAsteroids++;
+			if (numAsteroids > maxAsteroids) {
+				numAsteroids = maxAsteroids;
+			}
+			for (var i = 0; i < numAsteroids; i++) {
+				asteroids.push(new Asteroid());
+			}
+			setHUD();
 
-		setTimeout(restartSim, 2000);
-		
-	} else {
-		if (testStop(mouseX, mouseY)) {
-			// message battle again...
-			noLoop();
-			p5Time = 0;
+			setTimeout(restartSim, 2000);
+			
+		} else {
+			if (testStop(mouseX, mouseY)) {
+				// message battle again...
+				noLoop();
+				p5Time = 0;
+			}
 		}
 	}
-	
 }
 
 function keyReleased() {
