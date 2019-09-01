@@ -12,20 +12,24 @@ const {
 	Detector
 } = Matter;
 
-var ship;
-var stations = [];
+let ship;
+let stations = [];
 let numStations = 1;
-var asteroids = [];
+let asteroids = [];
 let numAsteroids = 1;
 let maxAsteroids = 7;
-var lasers = [];
+let lasers = [];
 
-var rapid = false;
-var removeAsteroids = false;
-var rapidStart = 0;
-var loopCtr = 0;
+let tentacles = [];
+let numSegs = 10;
+let segLength = 20;
+
+let rapid = false;
+let removeAsteroids = false;
+let rapidStart = 0;
+let loopCtr = 0;
 let shipRadius = 30;
-let minAsteroidRadius = 5;		//line48 addEvents.js
+let minAsteroidRadius = 7;		//line48 addEvents.js
 
 let domGameStop;
 let domGameTime;
@@ -74,8 +78,9 @@ function setup() {
 	ship = new Ship(shipPos, shipRadius, 0);	
 	
 	stations.push(new Station(width - 100, height / 2, 50, 50));
+	tentacles.push(new Tentacle(width /2, height, numSegs));
 	
-	for (var i = 0; i < numAsteroids; i++) {
+	for (let i = 0; i < numAsteroids; i++) {
 		asteroids.push(new Asteroid());
 	}
 	
@@ -110,7 +115,7 @@ function draw() {
 		p5DeltaT = 0;
 		//console.log('check health ', stations[0].health);
 		if (stations.length == 0) {
-			for (var i = 0; i < numStations; i++) {
+			for (let i = 0; i < numStations; i++) {
 				stations.push(new Station(width - 100, height / 2, 50, 50));				
 			}
 		}
@@ -144,7 +149,7 @@ function draw() {
 	if (frameCount % 10) {
 		//console.log('number of bodies ; ', world.bodies.length);
 		if (removeAsteroids) {
-			for (var i = asteroids.length - 1; i >= 0; i--) {
+			for (let i = asteroids.length - 1; i >= 0; i--) {
 				if (asteroids[i].body.label == 'asteroidDebris') {
 					Body.scale(asteroids[i].body, asteroids[i].parentR, asteroids[i].parentR);
 					asteroids[i].r = asteroids[i].parentR * 0.5;
@@ -152,7 +157,7 @@ function draw() {
 					asteroids[i].body.label = 'asteroid';
 					asteroids[i].scaleUp();
 					asteroids[i].show();
-					console.log('Debris', asteroids[i].body);
+					//console.log('Debris', asteroids[i].body);
 				}
 			}
 			removeAsteroids = false;
@@ -193,7 +198,22 @@ function draw() {
 	ship.edges();
 	ship.show();
 	
-	for (var i = fireworks.length - 1; i >= 0; i--) {
+	for (let i = 0; i < tentacles.length; i++) {
+        let t = tentacles[i];
+        t.update();
+        t.show();
+    }
+	/* let endPoint = tentacles[0].endPointPos();
+	
+	if (ship.body.position.x >= endPoint.x - 2 &&
+		ship.body.position.x <= endPoint.x + 2 &&
+		ship.body.position.y >= endPoint.y - 2 &&
+		ship.body.position.y <= endPoint.y + 2) {	
+		
+		console.log('contact');
+	} */
+	
+	for (let i = fireworks.length - 1; i >= 0; i--) {
 		
 		fireworks[i].update();
 		fireworks[i].show();
@@ -205,13 +225,13 @@ function draw() {
 }
 
 function laserFire() {
-	for (var i = lasers.length - 1; i >= 0; i--) {
+	for (let i = lasers.length - 1; i >= 0; i--) {
 		lasers[i].show();
 	}
 }
 
 function laserEndCycle() {
-	for (var i = lasers.length - 1; i >= 0; i--) {
+	for (let i = lasers.length - 1; i >= 0; i--) {
 		lasers[i].offscreen();
 	}
 }

@@ -39,7 +39,7 @@ class Asteroid {
 			var y = (this.r + this.offset[i])*sin(tangle);
 			vertx[i] = { x: x, y: y };
 		}
-		console.log(vertx);
+		//console.log(vertx);
 		
 		let reversed = [];
 		let j = 0;
@@ -47,7 +47,7 @@ class Asteroid {
 			reversed[j] = vertx[i];
 			j++;
 		}
-		console.log(reversed);
+		//console.log(reversed);
 /* 		
 //array.reverse(); did not work 
 

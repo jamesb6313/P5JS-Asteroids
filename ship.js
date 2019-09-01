@@ -85,7 +85,7 @@ class Ship {
 	
 	boost() {
 		var fVector = p5.Vector.fromAngle(this.body.angle);
-		fVector.mult(.05);
+		fVector.mult(.03);
 		//console.log(fVector, this.body.angle);
 		//console.log({ x: fVector.x, y : fVector.y }, this.body.angle);
 		Body.applyForce(this.body, this.body.position,  { x: fVector.x, y : fVector.y } );
