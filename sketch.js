@@ -52,12 +52,14 @@ let timeMin = 0;
 let gameTimeScale = 1;
 let gameLevel = 1;
 let gameStage = 1;
+let gamePause = false;
+let gameOver = false;
 
 let fireworks = [];
 
 let world, engine;
 let p5DeltaT,p5Time;
-let gamePause = false;
+
 	
 function setup() {
 	const canvas = createCanvas(800, 500); //(windowWidth, windowHeight);
@@ -78,7 +80,10 @@ function setup() {
 	ship = new Ship(shipPos, shipRadius, 0);	
 	
 	stations.push(new Station(width - 100, height / 2, 50, 50));
-	tentacles.push(new Tentacle(width /2, height, numSegs));
+	tentacles.push(new Tentacle(width /4, height, numSegs));
+	tentacles.push(new Tentacle(width /2, height, numSegs/2));
+	tentacles.push(new Tentacle(3*(width /4), height, numSegs));
+	
 	
 	for (let i = 0; i < numAsteroids; i++) {
 		asteroids.push(new Asteroid());
@@ -108,7 +113,12 @@ function setup() {
 function draw() {
 	background(0);
 		
-	if (gamePause) {
+	if (gamePause || gameOver) {
+		if (gameOver) {
+			noLoop();
+			p5Time = 0;
+			gameOverDisplay();
+		}
 		gameLevel++;
 		
 		deltaTime = 0;
@@ -166,6 +176,7 @@ function draw() {
 
 	if (ship.health <= 0) {	// Stop
 		noLoop();
+		gameOverDisplay();
 	}
 	loopCtr += 1;
 
@@ -198,6 +209,7 @@ function draw() {
 	ship.edges();
 	ship.show();
 	
+	//console.log(tentacles.length);
 	for (let i = 0; i < tentacles.length; i++) {
         let t = tentacles[i];
         t.update();

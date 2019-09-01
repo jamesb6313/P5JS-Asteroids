@@ -55,6 +55,7 @@ class Segment {
 
     show() {
         stroke(255, 0, 0, 100);
+		//stroke(this.fieldColor);
         strokeWeight(this.sw);
         line(this.a.x, this.a.y, this.b.x, this.b.y);
     }

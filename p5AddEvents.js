@@ -18,8 +18,7 @@ function mousePressed() {
 		} else {
 			if (testStop(mouseX, mouseY)) {
 				// message battle again...
-				noLoop();
-				p5Time = 0;
+				gameOver = true;
 			}
 		}
 	}
@@ -191,6 +190,9 @@ function setHUD() {
 	
 	let healthPct = 0;
 	healthPct = (ship.health) * 100;
+	if (healthPct <= 0) {
+		healthPct = 0.00;
+	}
 	
 	timeSec = p5Time / 1000;
 	let disLevelTime = disTimeMinSec(timeSec);		
@@ -213,8 +215,18 @@ function setHUD() {
 
 //DOM stop button callback
 function stopGame() {
-	noLoop();
-	p5Time = 0;
+	gameOver = true;
+	console.log('DOM stop button pressed');
+	//p5Time = 0;
+
+}
+
+function gameOverDisplay() {
+	textSize(62);
+	noStroke();
+	fill(255,255,0,100);
+	text('Game Over', width / 2 - 150, height / 2);
+	text('Thanks for Playing', width / 2 - 250, height / 2 + 100);
 }
 
 function setCanvasDisplay() {

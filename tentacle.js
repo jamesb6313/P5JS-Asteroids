@@ -8,6 +8,9 @@ class Tentacle {
     constructor(x, y, numSegments) {
         this.segments = [];
 
+		this.deltaHealth = 0.01;
+		this.health = 1.0;
+		this.fieldColor = color(0, 255, 0);
 		
         this.base = createVector(x, y);
         this.len = segLength;
@@ -25,13 +28,19 @@ class Tentacle {
 		World.add(world, this.body);
     }
 	
-	endPointPos() {
+/* 	endPointPos() {
 		return this.segments[this.segments.length - 1].b;
+	} */
+	changeColor() {
+		var gr = color(0, 255, 0);
+		var rd = color(255, 0, 0);
+		this.fieldColor = lerpColor(gr, rd, 1 - this.health);
 	}
 
     update() {
         let total = this.segments.length;
         let end = this.segments[total - 1];
+		
 		this.body.position = end.b;
 		
 		//console.log(ship.body.position);
