@@ -1,7 +1,7 @@
 // When the user clicks the mouse
 function mousePressed() {
 	// Check if mouse is inside the 
-	if (gamePause) {
+	if (gamePause  && !gameOver) {
 		if (testContinue(mouseX, mouseY)) {
 
 			numAsteroids++;
@@ -18,7 +18,9 @@ function mousePressed() {
 		} else {
 			if (testStop(mouseX, mouseY)) {
 				// message battle again...
+				console.log('mousePressed TestStop');
 				gameOver = true;
+				loop();
 			}
 		}
 	}
@@ -216,17 +218,31 @@ function setHUD() {
 //DOM stop button callback
 function stopGame() {
 	gameOver = true;
-	console.log('DOM stop button pressed');
+	//console.log('DOM stop button pressed');
 	//p5Time = 0;
 
 }
 
 function gameOverDisplay() {
+	
+	push();
+	rectMode(CENTER);
+	//canvas.clear();
+/* 	noStroke();
+	fill(255);
+	rect(width/2,height/2,width,height); */
+	
+	strokeWeight(2);
+	stroke(255, 255, 0);
+	fill(0, 255, 255);
+	rect(width / 2, height / 2, 600, 300, 20);	
+	
 	textSize(62);
 	noStroke();
-	fill(255,255,0,100);
-	text('Game Over', width / 2 - 150, height / 2);
-	text('Thanks for Playing', width / 2 - 250, height / 2 + 100);
+	fill(255,255,0);
+	text('Game Over', width / 2 - 150, height / 2 - 50);
+	text('Thanks for Playing', width / 2 - 250, height / 2 + 50);
+	pop();
 }
 
 function setCanvasDisplay() {

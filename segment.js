@@ -7,6 +7,7 @@
 class Segment {
     constructor(x, y, len, idx, numSegments) {
         this.angle = 0;
+		
         this.b = createVector();
         if (x instanceof Segment) {	// called with: new Segment(this.segments[i - 1], this.len, i, numSegments);
             // create from vector x, with len y			
@@ -53,9 +54,8 @@ class Segment {
         this.calculateB();
     }
 
-    show() {
-        stroke(255, 0, 0, 100);
-		//stroke(this.fieldColor);
+    show(clr) {
+        stroke(clr);
         strokeWeight(this.sw);
         line(this.a.x, this.a.y, this.b.x, this.b.y);
     }

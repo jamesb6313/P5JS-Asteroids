@@ -67,4 +67,12 @@ class Station {
 		
 		this.clr = 255;
 	}
+	
+	collisions(hitMass) {
+		this.health -= this.deltaHealth * hitMass;
+		this.health = 
+			(this.health < 0) ? 0 : this.health;
+			
+		this.changeColor();		
+	}
 }

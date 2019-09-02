@@ -60,9 +60,11 @@ let fireworks = [];
 let world, engine;
 let p5DeltaT,p5Time;
 
-	
+let canvas;
+
 function setup() {
-	const canvas = createCanvas(800, 500); //(windowWidth, windowHeight);
+	canvas = createCanvas(800, 500); //(windowWidth, windowHeight);
+	
 
 	engine = Engine.create();
 	world = engine.world;
@@ -113,12 +115,8 @@ function setup() {
 function draw() {
 	background(0);
 		
-	if (gamePause || gameOver) {
-		if (gameOver) {
-			noLoop();
-			p5Time = 0;
-			gameOverDisplay();
-		}
+	if (gamePause) {
+		console.log('INSIDE gamePause');
 		gameLevel++;
 		
 		deltaTime = 0;
@@ -147,7 +145,7 @@ function draw() {
 		
 		// Stop
 		drawStopButton();
-		
+		console.log('Stop Button Displayed');
 		//Success message 
 		
 		//Goal target %health >= 75& Shooting% >=70 ?time?- skill level
@@ -174,9 +172,11 @@ function draw() {
 		}
 	}
 
-	if (ship.health <= 0) {	// Stop
-		noLoop();
+	//console.log('BEFORE gameOver & ship.health checks');
+	if (ship.health <= 0|| gameOver) {
+		console.log('INSIDE gameOver & ship.health checks');		
 		gameOverDisplay();
+		noLoop();
 	}
 	loopCtr += 1;
 
