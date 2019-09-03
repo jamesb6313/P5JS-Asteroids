@@ -31,6 +31,8 @@ let loopCtr = 0;
 let shipRadius = 30;
 let minAsteroidRadius = 7;		//line48 addEvents.js
 
+let domGameRules;
+let domDisplayRules;
 let domGameStop;
 let domGameTime;
 let domLevelTime;
@@ -54,6 +56,7 @@ let gameLevel = 1;
 let gameStage = 1;
 let gamePause = false;
 let gameOver = false;
+let displayGameRules = false;
 
 let fireworks = [];
 
@@ -92,6 +95,10 @@ function setup() {
 	}
 	
 	//get DOM elements for displaying Game Statistics
+	domGameRules = select('#game_info_rules');
+	domDisplayRules = select('#displayRules');
+	domDisplayRules.mouseReleased(displayInfo_Rules);
+	
 	domHUDtable = select('#HUDtable');
 	domHUDtable.position(0, height + 10);
 	
@@ -173,7 +180,7 @@ function draw() {
 	}
 
 	//console.log('BEFORE gameOver & ship.health checks');
-	if (ship.health <= 0|| gameOver) {
+	if (ship.health <= 0 || gameOver) {
 		console.log('INSIDE gameOver & ship.health checks');		
 		gameOverDisplay();
 		noLoop();

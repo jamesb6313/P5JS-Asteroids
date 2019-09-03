@@ -77,10 +77,39 @@
 			left:50%;
 			transform:translateX(-50%);
 		}
+		#game_info_rules{
+			z-index: 99;
+			text-align: center;
+			color: Yellow;
+			background-color: grey;
+			position:absolute;
+			top:50px;
+			left:50px;
+			width: 700px;
+			height:400px;
+			display:none;		/* display: block or none */
+			border-width: 4px;
+			border-style: solid;
+			border-color: coral;
+		}
 	</style>
 	<body>
 		<div id="parent">
-			
+			<div id="game_info_rules">
+				<h1>Game Rules</h1> </br>
+				<p> 
+					Maintain Ships Health above 0%</br>
+					Each Asteroid Hit is worth 1 pointer
+				</p>
+				</br>
+				<h1>Game Stages Consist of 5 Level Each</h1> </br>
+				<p> 
+					First Stage consists of elemenating 5 Asteroids on 
+					all 5 levels</br>
+					On Final level 1 Station will appear and if destroyed will increase ships health</br>
+					Second Stage....
+				</p>
+			</div>
 			<div id="HUD">
 				<table id="HUDtable">
 					<tr>
@@ -91,6 +120,7 @@
 							Use Right and Left Arrows to rotate Ship</br></br>
 							Use Up Arrow for forward movement</br></br>
 							Use Space Bar to fire Laser Balls
+							<button id="displayRules" type="button">Show Rules</button>
 						</td>
 						<td colspan='2'>
 							<button id="gameStop" type="button">Stop Game</button>
@@ -106,8 +136,8 @@
 					<tr> 
 						<td>Level Time</td>
 						<td id="levelTime"></td>
-						<td>level time</td> 
-						<td>< 60</td> 
+						<td></td> 
+						<td></td> 
 					</tr>
 					
 					<tr> 
@@ -139,8 +169,8 @@
 								<div class="percent" 	id="perShooting"></div >
 							</div>
 						</td>
-						<td>shooting accuracy</td> 
-						<td>> 75%</td> 
+						<td></td> 
+						<td></td> 
 					</tr>
 					
 					<tr> <td>Health % </td>
@@ -150,8 +180,8 @@
 								<div class="percent" 	id="perHealth"></div >
 							</div>
 						</td> 
-						<td>percent healthly</td> 
-						<td>> 90</td>
+						<td></td> 
+						<td></td>
 					</tr>
 					
 				</table>	

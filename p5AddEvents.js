@@ -218,19 +218,29 @@ function setHUD() {
 //DOM stop button callback
 function stopGame() {
 	gameOver = true;
-	//console.log('DOM stop button pressed');
-	//p5Time = 0;
+}
 
+//DOM stop button callback
+function displayInfo_Rules() {
+
+	if (displayGameRules == false) {		
+		displayGameRules = true;
+		domGameRules.style('display : block;');
+		domDisplayRules.html('Hide Rules');
+		noLoop();
+	} else {		
+		displayGameRules = false;
+		domGameRules.style('display: none;');
+		domDisplayRules.html('Show Rules');
+		loop();
+	}
 }
 
 function gameOverDisplay() {
 	
-	push();
+/* 	push();
 	rectMode(CENTER);
-	//canvas.clear();
-/* 	noStroke();
-	fill(255);
-	rect(width/2,height/2,width,height); */
+
 	
 	strokeWeight(2);
 	stroke(255, 255, 0);
@@ -242,7 +252,11 @@ function gameOverDisplay() {
 	fill(255,255,0);
 	text('Game Over', width / 2 - 150, height / 2 - 50);
 	text('Thanks for Playing', width / 2 - 250, height / 2 + 50);
-	pop();
+	pop(); */
+	domGameRules.html('<h1><strong> GAME OVER - Thanks for Playing' +
+		'</strong><h1>');
+	domGameRules.style('display: block;');
+	//domGameRules.style('padding: 350px 0;');
 }
 
 function setCanvasDisplay() {
