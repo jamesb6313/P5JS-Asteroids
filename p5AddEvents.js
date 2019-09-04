@@ -3,22 +3,11 @@ function mousePressed() {
 	// Check if mouse is inside the 
 	if (gamePause  && !gameOver) {
 		if (testContinue(mouseX, mouseY)) {
-
-			numAsteroids++;
-			if (numAsteroids > maxAsteroids) {
-				numAsteroids = maxAsteroids;
-			}
-			for (var i = 0; i < numAsteroids; i++) {
-				asteroids.push(new Asteroid());
-			}
 			setHUD();
-
-			setTimeout(restartSim, 2000);
-			
+			setTimeout(restartSim, 2000);			
 		} else {
 			if (testStop(mouseX, mouseY)) {
-				// message battle again...
-				console.log('mousePressed TestStop');
+				//console.log('mousePressed TestStop');
 				gameOver = true;
 				loop();
 			}
@@ -200,7 +189,7 @@ function setHUD() {
 	let disLevelTime = disTimeMinSec(timeSec);		
 	
 	let totalTime = engine.timing.timestamp / 1000;
-	let disGameTime = disTimeMinSec(totalTime);
+	let disGameTime = disTimeMinSec(totalTime);	//will include pauseTime if any
 	
 	domGameTime.html(disGameTime);
 	domLevelTime.html(disLevelTime);
@@ -222,17 +211,25 @@ function stopGame() {
 
 //DOM stop button callback
 function displayInfo_Rules() {
-
+	
 	if (displayGameRules == false) {		
 		displayGameRules = true;
 		domGameRules.style('display : block;');
 		domDisplayRules.html('Hide Rules');
+		
 		noLoop();
 	} else {		
 		displayGameRules = false;
 		domGameRules.style('display: none;');
 		domDisplayRules.html('Show Rules');
-		loop();
+		
+		if (!gamePause) {
+			loop();
+		//this has to go after the loop within <this> function
+		
+			deltaTime = 0;
+			p5DeltaT = 0;
+		}
 	}
 }
 
