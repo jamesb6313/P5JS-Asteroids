@@ -117,6 +117,25 @@ function restartSim() {
 	gamePause = false;
 }
 	
+function drawStageLevel() {
+	push();
+/* 	rectMode(CENTER);
+	strokeWeight(2);
+	stroke(255, 0, 0);
+	fill(255, 0, 0, 127);
+	rect((width / 2) + 100, (height / 2), 100, 50, 20);	 */	
+	
+	textSize(32);	
+	noStroke();
+	fill(255);
+	let displayText = 'Stage ' + gameStage + ' - Level ' + gameLevel;
+	text(displayText, (width / 2) - 100, (height / 2) - 130);
+	
+	displayText = 'Completed - congradulations';
+	text(displayText, (width / 2) - 170, (height / 2) - 70);
+	
+	pop();
+}
 
 function drawContinueButton(){
 	push();
@@ -234,26 +253,9 @@ function displayInfo_Rules() {
 }
 
 function gameOverDisplay() {
-	
-/* 	push();
-	rectMode(CENTER);
-
-	
-	strokeWeight(2);
-	stroke(255, 255, 0);
-	fill(0, 255, 255);
-	rect(width / 2, height / 2, 600, 300, 20);	
-	
-	textSize(62);
-	noStroke();
-	fill(255,255,0);
-	text('Game Over', width / 2 - 150, height / 2 - 50);
-	text('Thanks for Playing', width / 2 - 250, height / 2 + 50);
-	pop(); */
 	domGameRules.html('<h1><strong> GAME OVER - Thanks for Playing' +
 		'</strong><h1>');
 	domGameRules.style('display: block;');
-	//domGameRules.style('padding: 350px 0;');
 }
 
 function setCanvasDisplay() {

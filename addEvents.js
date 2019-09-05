@@ -241,11 +241,11 @@ function addEvents(e) {
 			
 			//tentacleSensor collision
 			if (a.label == 'tentacleSensor') {
-				console.log('active tentacle collision', a);				
+				//console.log('active tentacle collision', a);				
 				for (var j = tentacles.length - 1; j >= 0; j--) {
 					if (a.id == tentacles[j].id) {
 						tentacles[j].collisions();					
-						console.log(tentacles[j].health);	
+						//console.log(tentacles[j].health);	
 						break;
 					}
 				}
@@ -254,11 +254,11 @@ function addEvents(e) {
 				}
 			} else {
 				if (b.label == 'tentacleSensor') {
-					console.log('active tentacle collision', b);
+					//console.log('active tentacle collision', b);
 					for (var j = tentacles.length - 1; j >= 0; j--) {
 						if (b.id == tentacles[j].id) {
 							tentacles[j].collisions();					
-							console.log(tentacles[j].health);	
+							//console.log(tentacles[j].health);	
 							break;
 						}
 					}

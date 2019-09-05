@@ -21,8 +21,8 @@ let maxAsteroids = 7;
 let lasers = [];
 
 let tentacles = [];
-let numSegs = 10;
-let segLength = 20;
+//let numSegs = 10;
+let segLength = 15;
 
 let rapid = false;
 let removeAsteroids = false;
@@ -87,24 +87,7 @@ function setup() {
 	addEvents(engine);
 	let shipPos = createVector(width/2,height/2);
 	ship = new Ship(shipPos, shipRadius, 0);	
-	
 
-	//Start game off since all other levels will use setupGameLevel()
-	for (let i = 0; i < numAsteroids; i++) {
-		asteroids.push(new Asteroid());
-	}
-
-/* 	stations.push(new Station(width - 100, height / 2, 50, 50));
-	tentacles.push(new Tentacle(width /4, height, numSegs));
-	tentacles.push(new Tentacle(width /2, height, numSegs/2));
-	tentacles.push(new Tentacle(3*(width /4), height, numSegs));
-	
-	
-	for (let i = 0; i < numAsteroids; i++) {
-		asteroids.push(new Asteroid());
-	}
-	*/
-	
 	//get DOM elements for displaying Game Statistics
 	domGameRules = select('#game_info_rules');
 	domDisplayRules = select('#displayRules');
@@ -128,27 +111,38 @@ function setup() {
 	domShipsHealthBar = select('#barHealth');
 	domShipsHealthVal = select('#perHealth');
 
-//gameStage = 2;
+
+let debugging = false; 	//true;
+	if (debugging == true) {
+		gameStage = 1;
+		gameLevel = 5;
+		//gamePause = true;
+		setupGameLevel();
+	}
+	
+	if (gameStage == 1 && gameLevel == 1) {
+		//Start game off since 
+		//all other levels will use setupGameLevel()
+		for (let i = 0; i < numAsteroids; i++) {
+			asteroids.push(new Asteroid());
+		}
+	}	
 }
+
+
 
 function draw() {
 	background(0);
-	
+		
 	if (gamePause) {
-		console.log('INSIDE gamePause');
+		//console.log('INSIDE gamePause');
 		gameLevel++;
 
 		if (gameLevel > 5) {
 			gameStage++;
 			gameLevel = 1;
 		}
-		if (gameStage > 3) {
-			gameStage = 3;
-		}
 		setupGameLevel();
-/* this happens in restartSim() ln 112 p5AddEvents
- 		deltaTime = 0;
-		p5DeltaT = 0; */
 	}
 
 
@@ -163,7 +157,10 @@ function draw() {
 		noLoop();
 		gamePause = true;
 		//let deltaTime = window.performance.now() - canvas._pInst._lastFrameTime;//
-	
+		
+		// Display Stage & Level just completed
+		drawStageLevel();
+		
 		// Continue
 		drawContinueButton();
 		
@@ -319,19 +316,29 @@ function setupGameLevel() {
 			}
 			
 			// Create new tentacles each level
-			tentacles.push(new Tentacle(width /4, height, numSegs));
-			tentacles.push(new Tentacle(width /2, height, numSegs/2));
-			tentacles.push(new Tentacle(3*(width /4), height, numSegs));
+			let numSegs;
+			let numTentacles = floor(random(3,10));
+			console.log('numSegments = ', numSegs, 'numTentacles = ', numTentacles);
+			console.log(random(3,10));
+			for (let i = 0; i < numTentacles; i++) {
+				let horPos = random(50, width - 50);
+				numSegs = floor(random(2,10));
+				if (random(0, 1) > 0.05) {
+					tentacles.push(new Tentacle(horPos, height, numSegs ));
+				} else {
+					tentacles.push(new Tentacle(horPos, 0, numSegs ));
+				}
+			}
 			
 			for (let i = 0; i < numAsteroids + 2; i++) {
 				asteroids.push(new Asteroid());
 			}
 			switch(gameLevel) {
 				case 1:
-					if (stations.length == 0) {
+/* 					if (stations.length == 0) {
 						stations.push(new Station(width - 100, height / 2, 50, 50));
 					}
-					break;
+					break; */
 				default:
 					//let curStationNum = stations.length;
 					if (stations.length == 0) {
