@@ -112,11 +112,10 @@ function setup() {
 	domShipsHealthVal = select('#perHealth');
 
 
-let debugging = false; 	//true;
+let debugging = false; //true;
 	if (debugging == true) {
-		gameStage = 1;
+		gameStage = 2;
 		gameLevel = 5;
-		//gamePause = true;
 		setupGameLevel();
 	}
 	
@@ -229,15 +228,6 @@ function draw() {
         t.update();
         t.show();
     }
-	/* let endPoint = tentacles[0].endPointPos();
-	
-	if (ship.body.position.x >= endPoint.x - 2 &&
-		ship.body.position.x <= endPoint.x + 2 &&
-		ship.body.position.y >= endPoint.y - 2 &&
-		ship.body.position.y <= endPoint.y + 2) {	
-		
-		console.log('contact');
-	} */
 	
 	for (let i = fireworks.length - 1; i >= 0; i--) {
 		

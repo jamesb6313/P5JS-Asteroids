@@ -1,32 +1,60 @@
 class Laser {
 	
-	constructor(ship) {
+	constructor(vehicle) {
 		let x,y;
+		this.source = vehicle;
 		
+		console.log(this.source);
 		this.remove = false;
-		this.speed = 9;
+		this.speed = 20; //doesn't due much used 12, 20
 		this.r = 3;
-		x = (ship.body.position.x + 2) + ship.r * cos(ship.body.angle);
-		y = (ship.body.position.y + 2) + ship.r * sin(ship.body.angle);
+		
+		let laserAngle;
+		if (this.source.body.label == 'station') {
+			console.log('station laser');
+			
+			//need to determine this
+			//Use circle of radius 75 around station as starting position of laser
+			x = this.source.body.position.x - 50;
+			y = this.source.body.position.y + 2;
+			laserAngle = atan2(ship.body.position.y - y, ship.body.position.x - x);
+
+			console.log(laserAngle);
+		} else {
+			console.log('ship laser');
+			x = (this.source.body.position.x + 2) + this.source.r * cos(this.source.body.angle);
+			y = (this.source.body.position.y + 2) + this.source.r * sin(this.source.body.angle);
+			laserAngle = this.source.body.angle;		
+		}
 		
 		const options = {
 			friction: 0.0,
-			frictionAir : 0.01,
+			//frictionAir : 0.01,
 			restitution: 0,
-			angle: ship.body.angle,
+			angle: laserAngle,
 			label: "laser"
 		}
 		this.body = Bodies.circle(x, y, this.r, options);
-		Body.setMass(this.body, this.body.mass * 0.01);
+		Body.setMass(this.body, this.body.mass * 0.001);
 		
 		//let group = Body.nextGroup();
 		//this.body.collisionFilter.group = group;
 		
-		Body.setVelocity(this.body, {
-			x: ship.body.velocity.x + this.speed * Math.cos(ship.body.angle),
-			y: ship.body.velocity.y + this.speed * Math.sin(ship.body.angle)
-		});
-		Matter.Body.setAngularVelocity(this.body, (Math.random() - 0.5) * 1);
+		if (this.source.body.label == 'station') {
+			console.log('station laser');
+ 			Body.setVelocity(this.body, {
+				x: this.speed * Math.cos(laserAngle),
+				y: this.speed * Math.sin(laserAngle)
+			});
+		} else {
+			console.log('ship laser');
+			Body.setVelocity(this.body, {
+				x: this.source.body.velocity.x + this.speed * Math.cos(this.source.body.angle),
+				y: this.source.body.velocity.y + this.speed * Math.sin(this.source.body.angle)
+			});
+		}
+
+		//Matter.Body.setAngularVelocity(this.body, (Math.random() - 0.5) * 1);
 		World.add(engine.world, this.body);
 	}
 
@@ -43,6 +71,7 @@ class Laser {
 		fill(255, 0, 0);	//red interior
 		ellipse(0, 0, this.r * 2, this.r * 2);
 		pop();
+		console.log('laser show ', this.body);
 	}
 		
 	offscreen() {

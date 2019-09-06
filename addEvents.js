@@ -21,6 +21,9 @@ function addEvents(e) {
 				if (b.mass < 0.1) {
 					hitMass = 1;
 				}
+				if (b.label == 'laser') {
+					hitMass = 5;
+				}
 				
 				ship.collisions(hitMass);
 			} else {
@@ -31,6 +34,9 @@ function addEvents(e) {
 					}
 					if (a.mass < 0.1) {
 						hitMass = 1;
+					}
+					if (a.label == 'laser') {
+						hitMass = 5;
 					}
 				
 					ship.collisions(hitMass);
@@ -176,8 +182,10 @@ function addEvents(e) {
 				asteroids[i].pos.x = asteroids[i].body.position.x;
 				asteroids[i].pos.y = asteroids[i].body.position.y;	
 				let numP = floor(random(50, 100));
-				fireworks.push(new Firework(asteroids[j].pos.x, asteroids[j].pos.y, numP));
-
+				//CAN CAUSE ERROR (preesed and held key 'a') - cannot read property  'pos' of undefined
+				//line below is the issue ??? was asteroids[j]
+				fireworks.push(new Firework(asteroids[i].pos.x, asteroids[i].pos.y, numP));
+				//
 				if (asteroids[i].split) {
 					World.remove(engine.world, asteroids[i].body);
 					var newAsteroids = asteroids[i].breakup();								

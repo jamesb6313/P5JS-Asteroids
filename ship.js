@@ -50,12 +50,12 @@ class Ship {
 	}
 
 	show() {
-		const pos = this.body.position;
+		this.pos = this.body.position;
 		const angle = this.body.angle;
 		
 		
 		push();
-		translate(pos.x, pos.y);
+		translate(this.pos.x, this.pos.y);
 		rotate(angle);
 		rectMode(CENTER);
 		noFill();
