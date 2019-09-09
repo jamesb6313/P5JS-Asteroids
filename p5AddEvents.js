@@ -36,10 +36,10 @@ function keyPressed() {
 	} else if (key == ' ') {
 		lasers.push(new Laser(ship));
 		shots++;
-	} else if (key == 'z') {
+/* 	} else if (key == 'z') {
 		if (stations.length > 0) {
 			lasers.push(new Laser(stations[0]));
-		}
+		} */
 	} else if (keyCode == RIGHT_ARROW) {
 		ship.setRotation(0.03);
 	} else if (keyCode == LEFT_ARROW) {
@@ -200,7 +200,8 @@ function setHUD() {
 		shootingAverage = (score / shots) * 100;
 	} else {
 		shootingAverage = 0;
-	}
+	}	
+	shootingAverage = (shootingAverage > 100) ? 100: shootingAverage;
 	
 	let healthPct = 0;
 	healthPct = (ship.health) * 100;

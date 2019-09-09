@@ -21,7 +21,7 @@ function addEvents(e) {
 				if (b.mass < 0.1) {
 					hitMass = 1;
 				}
-				if (b.label == 'laser') {
+				if (b.label.indexOf("laser") >= 0) {
 					hitMass = 5;
 				}
 				
@@ -35,7 +35,7 @@ function addEvents(e) {
 					if (a.mass < 0.1) {
 						hitMass = 1;
 					}
-					if (a.label == 'laser') {
+					if (a.label.indexOf("laser") >= 0) {
 						hitMass = 5;
 					}
 				
@@ -45,8 +45,9 @@ function addEvents(e) {
 
 			//Asteroid collisions (possible hits)
 			if (a.label == 'asteroid') {
-				if (b.label == 'laser') {
-					score++;
+				if (b.label.indexOf("laser") >= 0) {
+					score = (b.label.indexOf("laser") == 0) ? score + 1: score;
+					
 					for (var j = asteroids.length - 1; j >= 0; j--) {
 						if (a.id == asteroids[j].id) {
 							
@@ -61,9 +62,10 @@ function addEvents(e) {
 					//b.label = "dead";
 				}
 			} else {
-				if (a.label == 'laser') {
+				if (a.label.indexOf("laser") >= 0) {
 					if (b.label == 'asteroid') {
-						score++;
+						score = (b.label.indexOf("laser") == 0) ? score + 1: score;
+						
 						for (var j = asteroids.length - 1; j >= 0; j--) {
 							if (b.id == asteroids[j].id) {
 								
@@ -90,7 +92,7 @@ function addEvents(e) {
 				if (b.mass < 0.1) {
 					hitMass = 1;
 				}
-				if (b.label == 'laser') {
+				if (b.label.indexOf("laser") >= 0) {
 					hitMass = 5;
 				}
 				//console.log('stations.length = ', stations.length);
@@ -113,7 +115,7 @@ function addEvents(e) {
 					if (a.mass < 0.1) {
 						hitMass = 1;
 					}
-					if (a.label == 'laser') {
+					if (a.label.indexOf("laser") >= 0) {
 						hitMass = 5;
 					}
 					//console.log('b - station hit');
@@ -130,10 +132,10 @@ function addEvents(e) {
 			}
 			
 			//laser collisions
-			if (a.label == 'laser') {
+			if (a.label.indexOf("laser") >= 0) {
 				a.label = "dead";
 			} else {
-				if (b.label == 'laser') {
+				if (b.label.indexOf("laser") >= 0) {
 					b.label = "dead";
 				}
 			}
@@ -239,10 +241,10 @@ function addEvents(e) {
 			}
 			
 			//laser collisions
-			if (a.label == 'laser') {
+			if (a.label.indexOf("laser") >= 0) {
 				a.label = "dead"
 			} else {
-				if (b.label == 'laser') {
+				if (b.label.indexOf("laser") >= 0) {
 					b.label = "dead"
 				}
 			}

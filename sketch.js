@@ -112,7 +112,7 @@ function setup() {
 	domShipsHealthVal = select('#perHealth');
 
 
-let debugging = false; //true;
+let debugging = false;//true;
 	if (debugging == true) {
 		gameStage = 2;
 		gameLevel = 5;
@@ -182,6 +182,11 @@ function draw() {
 				}
 			}
 			removeAsteroids = false;
+		}
+		
+
+		if (stations.length > 0 && random(0, 1) < 0.005) {
+			lasers.push(new Laser(stations[0]));
 		}
 	}
 

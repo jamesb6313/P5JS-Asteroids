@@ -1,30 +1,53 @@
 class Laser {
 	
-	constructor(vehicle) {
+	constructor(source) {
 		let x,y;
-		this.source = vehicle;
+		//this.source = vehicle;
 		
-		console.log(this.source);
+		console.log(source);
 		this.remove = false;
 		this.speed = 20; //doesn't due much used 12, 20
 		this.r = 3;
 		
 		let laserAngle;
-		if (this.source.body.label == 'station') {
-			console.log('station laser');
+		let myLabel;
+		if (source.body.label == 'station') {
+			//console.log('station laser');
 			
-			//need to determine this
-			//Use circle of radius 75 around station as starting position of laser
-			x = this.source.body.position.x - 50;
-			y = this.source.body.position.y + 2;
+ 			//need to determine this
+			//Just use top-left & bottom-right corners for shooting
+			let tleftX = source.body.position.x - (25 + this.r + 1);
+			let tleftY = source.body.position.y - (25 + this.r + 1);
+			let brightX = source.body.position.x + (25 + this.r + 1);
+			let brightY = source.body.position.y + (25 + this.r + 1);
+			
+			//determine is ship is above & to left
+			if (ship.body.position.x < tleftX) {
+				x = tleftX;
+				y = tleftY;
+			} else {
+				if (ship.body.position.y < tleftY) {
+					x = tleftX;
+					y = tleftY;
+				} else {
+					x = brightX;
+					y = brightY;
+				}
+			}
+			
+			/* x = source.body.position.x - 50;
+			y = source.body.position.y + 2; */
 			laserAngle = atan2(ship.body.position.y - y, ship.body.position.x - x);
-
-			console.log(laserAngle);
+			myLabel = 'Stn_laser';
+			console.log('station ', myLabel.indexOf("laser"));
+			//console.log(laserAngle);
 		} else {
 			console.log('ship laser');
-			x = (this.source.body.position.x + 2) + this.source.r * cos(this.source.body.angle);
-			y = (this.source.body.position.y + 2) + this.source.r * sin(this.source.body.angle);
-			laserAngle = this.source.body.angle;		
+			x = (source.body.position.x + 2) + source.r * cos(source.body.angle);
+			y = (source.body.position.y + 2) + source.r * sin(source.body.angle);
+			laserAngle = source.body.angle;
+			myLabel = 'laser';
+			console.log('ship ', myLabel.indexOf("laser"));
 		}
 		
 		const options = {
@@ -32,7 +55,7 @@ class Laser {
 			//frictionAir : 0.01,
 			restitution: 0,
 			angle: laserAngle,
-			label: "laser"
+			label: myLabel
 		}
 		this.body = Bodies.circle(x, y, this.r, options);
 		Body.setMass(this.body, this.body.mass * 0.001);
@@ -40,17 +63,17 @@ class Laser {
 		//let group = Body.nextGroup();
 		//this.body.collisionFilter.group = group;
 		
-		if (this.source.body.label == 'station') {
-			console.log('station laser');
+		if (source.body.label == 'station') {
+			//console.log('station laser');
  			Body.setVelocity(this.body, {
-				x: this.speed * Math.cos(laserAngle),
-				y: this.speed * Math.sin(laserAngle)
+				x: this.speed * 0.5 * Math.cos(laserAngle),
+				y: this.speed * 0.5 * Math.sin(laserAngle)
 			});
 		} else {
-			console.log('ship laser');
+			//console.log('ship laser');
 			Body.setVelocity(this.body, {
-				x: this.source.body.velocity.x + this.speed * Math.cos(this.source.body.angle),
-				y: this.source.body.velocity.y + this.speed * Math.sin(this.source.body.angle)
+				x: source.body.velocity.x + this.speed * Math.cos(source.body.angle),
+				y: source.body.velocity.y + this.speed * Math.sin(source.body.angle)
 			});
 		}
 
@@ -71,7 +94,7 @@ class Laser {
 		fill(255, 0, 0);	//red interior
 		ellipse(0, 0, this.r * 2, this.r * 2);
 		pop();
-		console.log('laser show ', this.body);
+		//console.log('laser show ', this.body);
 	}
 		
 	offscreen() {
