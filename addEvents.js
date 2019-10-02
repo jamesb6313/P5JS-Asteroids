@@ -141,26 +141,31 @@ function addEvents(e) {
 			}
 			
 			//tentacleSensor collision
-			if (a.label == 'tentacleSensor') {
-				//console.log('start tentacle collision', a);				
+			if (a.label == 'tentacleSensor') {				
 				for (var j = tentacles.length - 1; j >= 0; j--) {
 					if (a.id == tentacles[j].id) {
-						tentacles[j].collisions();					
-						//console.log('Tentacles health ', tentacles[j].health);	
+						if (tentacles[j].orbType) {
+							tentacles[j].collisions(10);
+							console.log('orbTentacle health ', tentacles[j].health);
+						} else {
+							tentacles[j].collisions(1);					
+						}		
 						break;
 					}
 				}
 				if (b.label == 'ship') {
-					//console.log('tentacle collision');
 					ship.collisions(0.01);
 				}
 			} else {
 				if (b.label == 'tentacleSensor') {
-					//console.log('start tentacle collision', b);
 					for (var j = tentacles.length - 1; j >= 0; j--) {
 						if (b.id == tentacles[j].id) {
-							tentacles[j].collisions();					
-							//console.log('Tentacles health ', tentacles[j].health);	
+							if (tentacles[j].orbType) {
+								tentacles[j].collisions(10);
+								console.log('orbTentacle health ', tentacles[j].health);
+							} else {
+								tentacles[j].collisions(1);					
+							}						
 							break;
 						}
 					}

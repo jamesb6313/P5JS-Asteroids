@@ -32,6 +32,7 @@ let rapidStart = 0;
 let loopCtr = 0;
 let shipRadius = 30;
 let minAsteroidRadius = 7;		//line48 addEvents.js
+let fireRate;
 
 let domGameRules;
 let domDisplayRules;
@@ -115,7 +116,7 @@ function setup() {
 	domShipsHealthVal = select('#perHealth');
 
 
-let debugging = true;
+let debugging = false; //true;
 	if (debugging == true) {
 		gameStage = 3;
 		gameLevel = 3;
@@ -130,7 +131,7 @@ let debugging = true;
 		}
 	}
 
-val = createVector(floor(random(0,width)), floor(random(0, height)) );	
+	val = createVector(floor(random(0,width)), floor(random(0, height)) );	
 }
 
 
@@ -197,8 +198,6 @@ function draw() {
 		
 		//Get Station Firing at Ship
 		if (gameStage > 2 && gameLevel > 2) {
-			let fireRate = 3 * random(0, 0.005); //gameStage * gameLevel * random(0, 0.005);
-			//console.log(fireRate);
 			if (stations.length > 0 && random(0, 1) < fireRate) {
 				lasers.push(new Laser(stations[0]));
 			}
@@ -333,7 +332,7 @@ function setupGameLevel() {
 			
 			let orbPos = { x: random(0, width) , y: random(0, height) }
 			orbs.push(new Orb(orbPos.x, orbPos.y));
-			tentacles.push(new Tentacle(orbPos.x, orbPos.x, floor(random(5,15)), true ));
+			tentacles.push(new Tentacle(orbPos.x, orbPos.y, floor(random(5,15)), true ));
 			
 			//Remove tentacle sensor.body
 			for (var j = tentacles.length - 1; j >= 0; j--) {
@@ -350,9 +349,7 @@ function setupGameLevel() {
 			}
 			
 			// Create new tentacles each level
-			//let numSegs;
 			let numTentacles = floor(random(3,10));
-			//console.log('numSegments = ', numSegs, 'numTentacles = ', numTentacles);
 			for (let i = 0; i < numTentacles; i++) {
 				let horPos = random(50, width - 50);
 				let numSegs = floor(random(5,15));
@@ -390,5 +387,9 @@ function setupGameLevel() {
 			}
 			break;
 
-		}
+	}
+	
+	if (stations.length > 0) {
+		fireRate = 3 * random(0, 0.005); //gameStage * gameLevel * random(0, 0.005);
+	}
 }

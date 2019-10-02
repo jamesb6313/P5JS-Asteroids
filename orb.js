@@ -6,6 +6,7 @@ class Orb {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
+		//orbTentacle = new Tentacle(this.x, this.y, floor(random(5,15)), true );
 		this.dead = false;
 		this.vel = p5.Vector.random2D();
 		this.vel.mult(2);
@@ -19,7 +20,6 @@ class Orb {
 		    label: 'orb'
 		}
 		
-
 		this.body = Bodies.circle(this.x, this.y, radius, options);
 		Body.setVelocity(this.body, {x: this.vel.x, y: this.vel.y} );
 		World.add(world, this.body);

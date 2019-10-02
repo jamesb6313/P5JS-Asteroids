@@ -73,8 +73,8 @@ class Tentacle {
     }
 	
 	//tentacleSensor collision
-	collisions() {
-		this.health -= this.deltaHealth * 1;
+	collisions(scaleFactor) {
+		this.health -= this.deltaHealth * scaleFactor;
 		this.health = 
 			(this.health < 0) ? 0 : this.health;
 			
