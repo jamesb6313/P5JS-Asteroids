@@ -142,30 +142,30 @@ function addEvents(e) {
 			
 			//tentacleSensor collision
 			if (a.label == 'tentacleSensor') {
-				console.log('start tentacle collision', a);				
+				//console.log('start tentacle collision', a);				
 				for (var j = tentacles.length - 1; j >= 0; j--) {
 					if (a.id == tentacles[j].id) {
 						tentacles[j].collisions();					
-						console.log(tentacles[j].health);	
+						//console.log('Tentacles health ', tentacles[j].health);	
 						break;
 					}
 				}
 				if (b.label == 'ship') {
-					console.log('tentacle collision');
+					//console.log('tentacle collision');
 					ship.collisions(0.01);
 				}
 			} else {
 				if (b.label == 'tentacleSensor') {
-					console.log('start tentacle collision', b);
+					//console.log('start tentacle collision', b);
 					for (var j = tentacles.length - 1; j >= 0; j--) {
 						if (b.id == tentacles[j].id) {
 							tentacles[j].collisions();					
-							console.log(tentacles[j].health);	
+							//console.log('Tentacles health ', tentacles[j].health);	
 							break;
 						}
 					}
 					if (a.label == 'ship') {
-						console.log('tentacle collision');
+						//console.log('tentacle collision');
 						ship.collisions(0.01);
 					}
 				}
@@ -184,7 +184,7 @@ function addEvents(e) {
 				asteroids[i].pos.x = asteroids[i].body.position.x;
 				asteroids[i].pos.y = asteroids[i].body.position.y;	
 				let numP = floor(random(50, 100));
-				//CAN CAUSE ERROR (preesed and held key 'a') - cannot read property  'pos' of undefined
+				//CAN CAUSE ERROR (pressed and held key 'a') - cannot read property  'pos' of undefined
 				//line below is the issue ??? was asteroids[j]
 				fireworks.push(new Firework(asteroids[i].pos.x, asteroids[i].pos.y, numP));
 				//
@@ -249,34 +249,6 @@ function addEvents(e) {
 				}
 			}
 			
-			//tentacleSensor collision
-			if (a.label == 'tentacleSensor') {
-				//console.log('active tentacle collision', a);				
-				for (var j = tentacles.length - 1; j >= 0; j--) {
-					if (a.id == tentacles[j].id) {
-						tentacles[j].collisions();					
-						//console.log(tentacles[j].health);	
-						break;
-					}
-				}
-				if (b.label == 'ship') {
-					ship.collisions(0.01);
-				}
-			} else {
-				if (b.label == 'tentacleSensor') {
-					//console.log('active tentacle collision', b);
-					for (var j = tentacles.length - 1; j >= 0; j--) {
-						if (b.id == tentacles[j].id) {
-							tentacles[j].collisions();					
-							//console.log(tentacles[j].health);	
-							break;
-						}
-					}
-					if (a.label == 'ship') {
-						ship.collisions(0.01);
-					}
-				}
-			}
 		}
 	});
 

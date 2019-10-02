@@ -20,6 +20,8 @@ let numAsteroids = 5;
 let maxAsteroids = 7;
 let lasers = [];
 
+let orbs = [];
+
 let tentacles = [];
 //let numSegs = 10;
 let segLength = 15;
@@ -68,6 +70,7 @@ let p5Time = 0;
 //let pauseTime = 0;
 
 let canvas;
+let val;
 
 function setup() {
 	canvas = createCanvas(800, 500); //(windowWidth, windowHeight);
@@ -112,10 +115,10 @@ function setup() {
 	domShipsHealthVal = select('#perHealth');
 
 
-let debugging = false;//true;
+let debugging = true;
 	if (debugging == true) {
-		gameStage = 2;
-		gameLevel = 5;
+		gameStage = 3;
+		gameLevel = 3;
 		setupGameLevel();
 	}
 	
@@ -125,7 +128,9 @@ let debugging = false;//true;
 		for (let i = 0; i < numAsteroids; i++) {
 			asteroids.push(new Asteroid());
 		}
-	}	
+	}
+
+val = createVector(floor(random(0,width)), floor(random(0, height)) );	
 }
 
 
@@ -167,7 +172,13 @@ function draw() {
 		drawStopButton();
 	}
 	
-	if (frameCount % 10) {
+	if (frameCount % 10 == 0) {
+		
+		//if (frameCount % 10000 == 0) {
+			val = createVector(floor(random(0,width)), floor(random(0, height)) );
+			//console.log('val = ', val, ' frameCount = ', frameCount);
+		//}
+		
 		//console.log('number of bodies ; ', world.bodies.length);
 		if (removeAsteroids) {
 			for (let i = asteroids.length - 1; i >= 0; i--) {
@@ -184,15 +195,19 @@ function draw() {
 			removeAsteroids = false;
 		}
 		
-
-		if (stations.length > 0 && random(0, 1) < 0.005) {
-			lasers.push(new Laser(stations[0]));
+		//Get Station Firing at Ship
+		if (gameStage > 2 && gameLevel > 2) {
+			let fireRate = 3 * random(0, 0.005); //gameStage * gameLevel * random(0, 0.005);
+			//console.log(fireRate);
+			if (stations.length > 0 && random(0, 1) < fireRate) {
+				lasers.push(new Laser(stations[0]));
+			}
 		}
 	}
 
 	//console.log('BEFORE gameOver & ship.health checks');
 	if (ship.health <= 0 || gameOver) {
-		console.log('INSIDE gameOver & ship.health checks');		
+		//console.log('INSIDE gameOver & ship.health checks');		
 		gameOverDisplay();
 		noLoop();
 	}
@@ -224,13 +239,32 @@ function draw() {
 	for (let i = 0; i < stations.length; i++) {
 		stations[i].show();
 	}
+	
+	for (let i = 0; i < orbs.length; i++) {
+		orbs[i].show();
+		orbs[i].edges();
+	}
+	
 	ship.edges();
 	ship.show();
 	
 	//console.log(tentacles.length);
 	for (let i = 0; i < tentacles.length; i++) {
         let t = tentacles[i];
-        t.update();
+		if (ship.body.position.y > height / 2) {
+			if (t.orbType) {
+				t.update(orbs[0].x,orbs[0].y,ship.body.position.x, ship.body.position.y);
+			} else {
+				t.update(t.base.x,t.base.y,ship.body.position.x, ship.body.position.y);
+			}
+		} else {
+			//let val = createVector(floor(random(0,width)), floor(random(0, height)) );
+			if (t.orbType) {
+				t.update(orbs[0].x,orbs[0].y,ship.body.position.x, ship.body.position.y);
+			} else {
+				t.update(t.base.x,t.base.y,val.x, val.y);
+			}
+		}
         t.show();
     }
 	
@@ -259,7 +293,7 @@ function laserEndCycle() {
 
 function setupGameLevel() {
 	
-	console.log(gameLevel, gameStage);
+	//console.log(gameLevel, gameStage);
 	switch(gameStage) {
 		case 1:
 			for (let i = 0; i < numAsteroids; i++) {
@@ -296,6 +330,11 @@ function setupGameLevel() {
 			}
 			break;
 		case 3:
+			
+			let orbPos = { x: random(0, width) , y: random(0, height) }
+			orbs.push(new Orb(orbPos.x, orbPos.y));
+			tentacles.push(new Tentacle(orbPos.x, orbPos.x, floor(random(5,15)), true ));
+			
 			//Remove tentacle sensor.body
 			for (var j = tentacles.length - 1; j >= 0; j--) {
 				if (tentacles[j].health <= 0) {
@@ -311,17 +350,16 @@ function setupGameLevel() {
 			}
 			
 			// Create new tentacles each level
-			let numSegs;
+			//let numSegs;
 			let numTentacles = floor(random(3,10));
-			console.log('numSegments = ', numSegs, 'numTentacles = ', numTentacles);
-			console.log(random(3,10));
+			//console.log('numSegments = ', numSegs, 'numTentacles = ', numTentacles);
 			for (let i = 0; i < numTentacles; i++) {
 				let horPos = random(50, width - 50);
-				numSegs = floor(random(2,10));
+				let numSegs = floor(random(5,15));
 				if (random(0, 1) > 0.05) {
-					tentacles.push(new Tentacle(horPos, height, numSegs ));
+					tentacles.push(new Tentacle(horPos, height, numSegs, false ));
 				} else {
-					tentacles.push(new Tentacle(horPos, 0, numSegs ));
+					tentacles.push(new Tentacle(horPos, 0, numSegs, false  ));
 				}
 			}
 			

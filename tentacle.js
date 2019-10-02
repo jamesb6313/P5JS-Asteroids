@@ -5,9 +5,10 @@
 // Tanscription to Javascript: Chuck England
 
 class Tentacle {
-    constructor(x, y, numSegments) {
+    constructor(x, y, numSegments, orbType) {
         this.segments = [];
-
+		this.orbType = orbType;
+		
 		this.deltaHealth = 0.01;
 		this.health = 1.0;
 		this.clr = color(0, 255, 0, 100);
@@ -39,19 +40,22 @@ class Tentacle {
 		this.clr = lerpColor(gr, rd, 1 - this.health);
 	}
 
-    update() {
+    update(baseX,baseY,followX,followY) {
+		this.base = createVector(baseX, baseY);
+	//update(followX,followY) {
         let total = this.segments.length;
         let end = this.segments[total - 1];
 		
 		this.body.position = end.b;
 		
-		//console.log(ship.body.position);
-        end.follow(ship.body.position.x, ship.body.position.y);
-        end.update();
+		end.follow(followX,followY);
+		end.update(baseX,baseY,followX,followY);
+		//end.update(followX,followY);
 
         for (let i = total - 2; i >= 0; i--) {
             this.segments[i].followChild(this.segments[i + 1]);
-            this.segments[i].update();
+			this.segments[i].update(baseX,baseY,followX,followY);
+            //this.segments[i].update(followX,followY);
         }
 
         this.segments[0].setA(this.base);

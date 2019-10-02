@@ -4,7 +4,7 @@ class Laser {
 		let x,y;
 		//this.source = vehicle;
 		
-		console.log(source);
+		//console.log(source);
 		this.remove = false;
 		this.speed = 20; //doesn't due much used 12, 20
 		this.r = 3;
@@ -39,15 +39,15 @@ class Laser {
 			y = source.body.position.y + 2; */
 			laserAngle = atan2(ship.body.position.y - y, ship.body.position.x - x);
 			myLabel = 'Stn_laser';
-			console.log('station ', myLabel.indexOf("laser"));
+			//console.log('station ', myLabel.indexOf("laser"));
 			//console.log(laserAngle);
 		} else {
-			console.log('ship laser');
+			//console.log('ship laser');
 			x = (source.body.position.x + 2) + source.r * cos(source.body.angle);
 			y = (source.body.position.y + 2) + source.r * sin(source.body.angle);
 			laserAngle = source.body.angle;
 			myLabel = 'laser';
-			console.log('ship ', myLabel.indexOf("laser"));
+			//console.log('ship ', myLabel.indexOf("laser"));
 		}
 		
 		const options = {
