@@ -71,7 +71,7 @@ let p5Time = 0;
 //let pauseTime = 0;
 
 let canvas;
-let val;
+let tentRandomTarget;
 
 function setup() {
 	canvas = createCanvas(800, 500); //(windowWidth, windowHeight);
@@ -116,7 +116,7 @@ function setup() {
 	domShipsHealthVal = select('#perHealth');
 
 
-let debugging = false; //true;
+let debugging = true;
 	if (debugging == true) {
 		gameStage = 3;
 		gameLevel = 3;
@@ -131,7 +131,7 @@ let debugging = false; //true;
 		}
 	}
 
-	val = createVector(floor(random(0,width)), floor(random(0, height)) );	
+	tentRandomTarget = createVector(floor(random(0,width)), floor(random(0, height)) );	
 }
 
 
@@ -176,11 +176,10 @@ function draw() {
 	if (frameCount % 10 == 0) {
 		
 		//if (frameCount % 10000 == 0) {
-			val = createVector(floor(random(0,width)), floor(random(0, height)) );
-			//console.log('val = ', val, ' frameCount = ', frameCount);
+			tentRandomTarget = createVector(floor(random(0,width)), floor(random(0, height)) );
+			//console.log('tentRandomTarget = ', tentRandomTarget, ' frameCount = ', frameCount);
 		//}
 		
-		//console.log('number of bodies ; ', world.bodies.length);
 		if (removeAsteroids) {
 			for (let i = asteroids.length - 1; i >= 0; i--) {
 				if (asteroids[i].body.label == 'asteroidDebris') {
@@ -242,6 +241,17 @@ function draw() {
 	for (let i = 0; i < orbs.length; i++) {
 		orbs[i].show();
 		orbs[i].edges();
+		//console.log(orbs[i]);
+		if (orbs[i].orbTentacle) {
+			// check health
+			if (orbs[i].orbTentacle.health > 0) {
+				orbs[i].orbTentacle.update(orbs[i].x,orbs[i].y,ship.body.position.x, ship.body.position.y);
+				orbs[i].orbTentacle.show();
+			} else {
+				World.remove(world, orbs[i].orbTentacle.body);
+				orbs[i].orbTentacle = null;
+			}
+		}
 	}
 	
 	ship.edges();
@@ -251,18 +261,9 @@ function draw() {
 	for (let i = 0; i < tentacles.length; i++) {
         let t = tentacles[i];
 		if (ship.body.position.y > height / 2) {
-			if (t.orbType) {
-				t.update(orbs[0].x,orbs[0].y,ship.body.position.x, ship.body.position.y);
-			} else {
-				t.update(t.base.x,t.base.y,ship.body.position.x, ship.body.position.y);
-			}
+			t.update(t.base.x,t.base.y,ship.body.position.x, ship.body.position.y);
 		} else {
-			//let val = createVector(floor(random(0,width)), floor(random(0, height)) );
-			if (t.orbType) {
-				t.update(orbs[0].x,orbs[0].y,ship.body.position.x, ship.body.position.y);
-			} else {
-				t.update(t.base.x,t.base.y,val.x, val.y);
-			}
+			t.update(t.base.x,t.base.y,tentRandomTarget.x, tentRandomTarget.y);
 		}
         t.show();
     }
@@ -332,7 +333,7 @@ function setupGameLevel() {
 			
 			let orbPos = { x: random(0, width) , y: random(0, height) }
 			orbs.push(new Orb(orbPos.x, orbPos.y));
-			tentacles.push(new Tentacle(orbPos.x, orbPos.y, floor(random(5,15)), true ));
+			//tentacles.push(new Tentacle(orbPos.x, orbPos.y, floor(random(5,15)), true ));
 			
 			//Remove tentacle sensor.body
 			for (var j = tentacles.length - 1; j >= 0; j--) {

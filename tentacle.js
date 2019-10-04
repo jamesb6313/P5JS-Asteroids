@@ -5,9 +5,8 @@
 // Tanscription to Javascript: Chuck England
 
 class Tentacle {
-    constructor(x, y, numSegments, orbType) {
+    constructor(x, y, numSegments) {
         this.segments = [];
-		this.orbType = orbType;
 		
 		this.deltaHealth = 0.01;
 		this.health = 1.0;

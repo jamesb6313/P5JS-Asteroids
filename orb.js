@@ -6,8 +6,9 @@ class Orb {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
-		//orbTentacle = new Tentacle(this.x, this.y, floor(random(5,15)), true );
+		this.orbTentacle = new Tentacle(this.x, this.y, floor(random(5,15)), true );
 		this.dead = false;
+		this.maxHits = 5;
 		this.vel = p5.Vector.random2D();
 		this.vel.mult(2);
 		
