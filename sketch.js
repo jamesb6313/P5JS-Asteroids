@@ -116,7 +116,7 @@ function setup() {
 	domShipsHealthVal = select('#perHealth');
 
 
-let debugging = true;
+let debugging = false;//true;
 	if (debugging == true) {
 		gameStage = 3;
 		gameLevel = 3;
