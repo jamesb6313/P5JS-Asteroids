@@ -109,16 +109,16 @@ function setup() {
 	domGameStage = select('#gameStage');
 	domAsteroidsLeft = select('#asteroidsLeft');
 	
-	domShootingBar =select('#barShooting');
-	domShootingVal =select('#perShooting');
+	domShootingBar = select('#barShooting');
+	domShootingVal = select('#perShooting');
 	
 	domShipsHealthBar = select('#barHealth');
 	domShipsHealthVal = select('#perHealth');
 
 
-let debugging = false;//true;
+let debugging = false; //true;
 	if (debugging == true) {
-		gameStage = 3;
+		gameStage = 4;
 		gameLevel = 3;
 		setupGameLevel();
 	}
@@ -175,10 +175,8 @@ function draw() {
 	
 	if (frameCount % 10 == 0) {
 		
-		//if (frameCount % 10000 == 0) {
-			tentRandomTarget = createVector(floor(random(0,width)), floor(random(0, height)) );
-			//console.log('tentRandomTarget = ', tentRandomTarget, ' frameCount = ', frameCount);
-		//}
+
+		tentRandomTarget = createVector(floor(random(0,width)), floor(random(0, height)) );
 		
 		if (removeAsteroids) {
 			for (let i = asteroids.length - 1; i >= 0; i--) {
@@ -197,10 +195,14 @@ function draw() {
 		
 		//Get Station Firing at Ship
 		if (gameStage > 2 && gameLevel > 2) {
-			if (stations.length > 0 && random(0, 1) < fireRate) {
+			if (stations.length > 0 && random(0, 1) < .05) {
 				lasers.push(new Laser(stations[0]));
 			}
+ 			if (orbs.length > 0 && random(0, 1) < .10) {
+				lasers.push(new Laser(orbs[0]));
+			}
 		}
+
 	}
 
 	//console.log('BEFORE gameOver & ship.health checks');
@@ -331,10 +333,6 @@ function setupGameLevel() {
 			break;
 		case 3:
 			
-			let orbPos = { x: random(0, width) , y: random(0, height) }
-			orbs.push(new Orb(orbPos.x, orbPos.y));
-			//tentacles.push(new Tentacle(orbPos.x, orbPos.y, floor(random(5,15)), true ));
-			
 			//Remove tentacle sensor.body
 			for (var j = tentacles.length - 1; j >= 0; j--) {
 				if (tentacles[j].health <= 0) {
@@ -364,6 +362,52 @@ function setupGameLevel() {
 			for (let i = 0; i < numAsteroids + 2; i++) {
 				asteroids.push(new Asteroid());
 			}
+			switch(gameLevel) {
+				case 1:
+/* 					if (stations.length == 0) {
+						stations.push(new Station(width - 100, height / 2, 50, 50));
+					}
+					break; */
+				default:
+					//let curStationNum = stations.length;
+					if (stations.length == 0) {
+						stations.push(new Station(width - 100, height / 2, 50, 50));
+						stations.push(new Station(100, height / 2, 50, 50));
+					} else {
+						if (stations.length == 1) {
+							
+							if (stations[0].x == 100) {
+								stations.push(new Station(width - 100, height / 2, 50, 50));
+							} else {
+								stations.push(new Station(100, height / 2, 50, 50));
+							}
+						}
+					}
+			}
+			break;
+		case 4:
+			
+			let orbPos = { x: random(0, width) , y: random(0, height) }
+			orbs.push(new Orb(orbPos.x, orbPos.y));
+			
+			
+			//Remove tentacle sensor.body
+			for (var j = tentacles.length - 1; j >= 0; j--) {
+				if (tentacles[j].health <= 0) {
+					World.remove(world, tentacles[j].body);										
+				}
+			}
+			
+			//Remove tentacle
+			for (var j = tentacles.length - 1; j >= 0; j--) {
+				if (tentacles[j].health <= 0) {
+					tentacles.splice(j, 1);								
+				}
+			}
+			for (let i = 0; i < numAsteroids + 2; i++) {
+				asteroids.push(new Asteroid());
+			}
+			
 			switch(gameLevel) {
 				case 1:
 /* 					if (stations.length == 0) {

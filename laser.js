@@ -14,14 +14,13 @@ class Laser {
 		if (source.body.label == 'station') {
 			//console.log('station laser');
 			
- 			//need to determine this
 			//Just use top-left & bottom-right corners for shooting
 			let tleftX = source.body.position.x - (25 + this.r + 1);
 			let tleftY = source.body.position.y - (25 + this.r + 1);
 			let brightX = source.body.position.x + (25 + this.r + 1);
 			let brightY = source.body.position.y + (25 + this.r + 1);
 			
-			//determine is ship is above & to left
+			//determine if ship is above & to left
 			if (ship.body.position.x < tleftX) {
 				x = tleftX;
 				y = tleftY;
@@ -35,22 +34,20 @@ class Laser {
 				}
 			}
 			
-			/* x = source.body.position.x - 50;
-			y = source.body.position.y + 2; */
 			laserAngle = atan2(ship.body.position.y - y, ship.body.position.x - x);
 			myLabel = 'Stn_laser';
 			//console.log('station ', myLabel.indexOf("laser"));
 			//console.log(laserAngle);
 		} else {
-/* 			if (source.body.label == 'orb') {
-				//console.log('orb laser');
+			if (source.body.label == 'orb') {
 				x = (source.body.position.x + 2) + source.r * cos(source.body.angle);
 				y = (source.body.position.y + 2) + source.r * sin(source.body.angle);
-				laserAngle = source.body.angle;
+				//laserAngle = source.body.angle;
+				laserAngle = atan2(ship.body.position.y - y, ship.body.position.x - x);
 				myLabel = 'Orb_laser';
-			} else {
-			 */
-			
+				
+				console.log('orb laser x, y ', x, y);
+			} else {	
 				//console.log('ship laser');
 				x = (source.body.position.x + 2) + source.r * cos(source.body.angle);
 				y = (source.body.position.y + 2) + source.r * sin(source.body.angle);
@@ -58,7 +55,7 @@ class Laser {
 				myLabel = 'laser';
 				//console.log('ship ', myLabel.indexOf("laser"));
 			}
-		//}
+		}
 		
 		const options = {
 			friction: 0.0,
@@ -79,8 +76,7 @@ class Laser {
 				x: this.speed * 0.5 * Math.cos(laserAngle),
 				y: this.speed * 0.5 * Math.sin(laserAngle)
 			});
-		} else {
-			//console.log('ship laser');
+		} else {  //Ship & Orb laser
 			Body.setVelocity(this.body, {
 				x: source.body.velocity.x + this.speed * Math.cos(source.body.angle),
 				y: source.body.velocity.y + this.speed * Math.sin(source.body.angle)

@@ -6,7 +6,8 @@ class Orb {
 	constructor(x, y) {
 		this.x = x;
 		this.y = y;
-		this.orbTentacle = new Tentacle(this.x, this.y, floor(random(5,15)), true );
+		this.r = radius;	//need this for laser see laser.js line 44
+		this.orbTentacle = new Tentacle(this.x, this.y, floor(random(5,10)), true );
 		this.dead = false;
 		this.maxHits = 5;
 		this.vel = p5.Vector.random2D();
@@ -30,11 +31,13 @@ class Orb {
 	
 	show() {
 		const pos = this.body.position;
+		const angle = this.body.angle;
 		this.x = pos.x;
 		this.y = pos.y;
 		
 		push();
-		translate(pos.x, pos.y);
+		translate(this.x, this.y);
+		rotate(angle);
 		noFill();
 		strokeWeight(1);
 		stroke(225);
