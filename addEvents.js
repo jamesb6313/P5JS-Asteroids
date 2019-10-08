@@ -142,6 +142,10 @@ function addEvents(e) {
 							if (orbs[j].maxHits <= 0) {
 								//need to kill of tentacle also
 								orbs[j].dead = true;
+								ship.health += 0.25; //double health
+								ship.health = (ship.health > 1) ? 1 : ship.health;
+								ship.changeColor();
+						
 							}
 							break;
 						}
@@ -156,8 +160,11 @@ function addEvents(e) {
 							if (b.id == orbs[j].id) {
 								orbs[j].maxHits--;
 								if (orbs[j].maxHits <= 0) {
-									//need to kill of tentacle also
+									//need to kill tentacle also
 									orbs[j].dead = true;
+									ship.health += 0.25; //double health
+									ship.health = (ship.health > 1) ? 1 : ship.health;
+									ship.changeColor();
 								}							
 								break;
 							}
@@ -386,13 +393,16 @@ function addEvents(e) {
 				tentacles.splice(j, 1);								
 			}
 		}
-		
-		//console.log('afterEvent', orbs.length);
+				
 		//Remove orb.body & orb tentacle.body
 		for (var i = orbs.length - 1; i >= 0; i--) {
-			if (orbs[i].dead) {								
+			if (orbs[i].dead) {
+				if (orbs[i].orbTentacle) {
+					World.remove(world, orbs[i].orbTentacle.body);	
+					orbs[i].orbTentacle = null;
+				}
 				World.remove(world, orbs[i].body);
-			}
+			} 
 		}
 		
 		//Remove orb

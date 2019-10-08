@@ -40,10 +40,16 @@ class Laser {
 			//console.log(laserAngle);
 		} else {
 			if (source.body.label == 'orb') {
+				
 				x = (source.body.position.x + 2) + source.r * cos(source.body.angle);
 				y = (source.body.position.y + 2) + source.r * sin(source.body.angle);
-				//laserAngle = source.body.angle;
-				laserAngle = atan2(ship.body.position.y - y, ship.body.position.x - x);
+				laserAngle = source.body.angle;
+				
+				
+/* 				//rotate to ship then fire - try in addEvents - afterUpdate
+				let testAngle = atan2(ship.body.position.y - y, ship.body.position.x - x);
+				Body.rotate(source.body, testAngle);
+				// */
 				myLabel = 'Orb_laser';
 				
 				console.log('orb laser x, y ', x, y);
@@ -107,12 +113,12 @@ class Laser {
 		const pos = this.body.position;
 		if (pos.x > width || pos.x < 0) {
 			this.body.label = 'dead';
-			this.remove = true;
+			//this.remove = true; - in addEvents line 371
 			return true;
 		}
 		if (pos.y > height || pos.y < 0) {
 			this.body.label = 'dead';
-			this.remove = true;
+			//this.remove = true; - in addEvents line 371
 			return true;
 		}
 		return false;

@@ -45,6 +45,16 @@ class Orb {
 		line(0, 0, radius, 0);	//show angle		
 		pop();
 	}
+	
+/* 	follow(tx, ty) {
+        let target = createVector(tx, ty);
+        let dir = p5.Vector.sub(target, this.body.position);
+        this.angle = dir.heading();
+		Body.rotate(this.body, this.angle);
+        //dir.setMag(this.len);
+        //dir.mult(-1);
+        //this.a = p5.Vector.add(target, dir);
+    } */
 			
 	edges() {
 		const pos = this.body.position;
