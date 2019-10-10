@@ -71,7 +71,7 @@ let p5Time = 0;
 //let pauseTime = 0;
 
 let canvas;
-let tentRandomTarget;
+//let tentRandomTarget;
 
 function setup() {
 	canvas = createCanvas(800, 500); //(windowWidth, windowHeight);
@@ -116,9 +116,9 @@ function setup() {
 	domShipsHealthVal = select('#perHealth');
 
 
-let debugging = false;//true;
+let debugging = true;
 	if (debugging == true) {
-		gameStage = 4;
+		gameStage = 3;
 		gameLevel = 3;
 		setupGameLevel();
 	}
@@ -131,7 +131,7 @@ let debugging = false;//true;
 		}
 	}
 
-	tentRandomTarget = createVector(floor(random(0,width)), floor(random(0, height)) );	
+	//tentRandomTarget = createVector(floor(random(0,width)), floor(random(0, height)) );	
 }
 
 
@@ -176,7 +176,7 @@ function draw() {
 	if (frameCount % 10 == 0) {
 		
 
-		tentRandomTarget = createVector(floor(random(0,width)), floor(random(0, height)) );
+		//tentRandomTarget = createVector(floor(random(0,width)), floor(random(0, height)) );
 		
 		if (removeAsteroids) {
 			for (let i = asteroids.length - 1; i >= 0; i--) {
@@ -272,11 +272,13 @@ function draw() {
 // Display TENTICLES
 	for (let i = 0; i < tentacles.length; i++) {
         let t = tentacles[i];
-		if (ship.body.position.y > height / 2) {
+		//if (ship.body.position.y > height / 2) {
 			t.update(t.base.x,t.base.y,ship.body.position.x, ship.body.position.y);
-		} else {
+		/* } else {
 			t.update(t.base.x,t.base.y,tentRandomTarget.x, tentRandomTarget.y);
-		}
+		} */
+		
+		t.moveClockwise();
         t.show();
     }
 
@@ -355,14 +357,11 @@ function setupGameLevel() {
 			
 			// Create new tentacles each level
 			let numTentacles = floor(random(3,7));
-			for (let i = 0; i < numTentacles; i++) {
-				let horPos = random(50, width - 50);
+			let horPos = floor(width - 20);
+			for (let i = 0; i < numTentacles; i++) {			
 				let numSegs = floor(random(5,15));
-				if (random(0, 1) > 0.05) {
-					tentacles.push(new Tentacle(horPos, height, numSegs, false ));
-				} else {
-					tentacles.push(new Tentacle(horPos, 0, numSegs, false  ));
-				}
+				tentacles.push(new Tentacle(horPos, height, numSegs, false ));
+				horPos -= floor(random(50,floor(width/2)));
 			}
 			
 			for (let i = 0; i < numAsteroids + 2; i++) {

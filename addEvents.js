@@ -191,6 +191,7 @@ function addEvents(e) {
 					if (a.id == tentacles[j].id) {
 						tentacles[j].collisions(1);
 						sensorFound = true;
+						console.log('orbTentacle health ', tentacles[j].health);
 						break;
 					}
 				}
@@ -200,7 +201,7 @@ function addEvents(e) {
 						if (orbs[i].orbTentacle) {
 							if (a.id == orbs[i].orbTentacle.body.id) {
 								orbs[i].orbTentacle.collisions(10);
-								console.log('orbTentacle health ', orbs[i].orbTentacle.health);
+								console.log('Tentacle health ', orbs[i].orbTentacle.health);
 							}
 						}
 					}
@@ -214,7 +215,8 @@ function addEvents(e) {
 				if (b.label == 'tentacleSensor') {
 					for (var j = tentacles.length - 1; j >= 0; j--) {
 						if (b.id == tentacles[j].id) {
-							tentacles[j].collisions(1);										
+							tentacles[j].collisions(1);
+							console.log('Tentacle health ', tentacles[j].health);
 							sensorFound = true;
 							break;
 						}
@@ -249,7 +251,7 @@ function addEvents(e) {
 				
 				asteroids[i].pos.x = asteroids[i].body.position.x;
 				asteroids[i].pos.y = asteroids[i].body.position.y;	
-				let numP = floor(random(50, 100));
+				let numP = floor(random(25, 50));
 				//CAN CAUSE ERROR (pressed and held key 'a') - cannot read property  'pos' of undefined
 				//line below is the issue ??? was asteroids[j]
 				fireworks.push(new Firework(asteroids[i].pos.x, asteroids[i].pos.y, numP));

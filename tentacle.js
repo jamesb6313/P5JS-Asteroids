@@ -7,8 +7,10 @@
 class Tentacle {
     constructor(x, y, numSegments) {
         this.segments = [];
+		this.deltaX = 5;		//move 5 pixels right
+		this.deltaY = 5;		//move 5 pixels down
 		
-		this.deltaHealth = 0.01;
+		this.deltaHealth = 0.05;
 		this.health = 1.0;
 		this.clr = color(0, 255, 0, 100);
 		
@@ -37,6 +39,42 @@ class Tentacle {
 		var gr = color(0, 255, 0, 100);
 		var rd = color(255, 0, 0, 100);
 		this.clr = lerpColor(gr, rd, 1 - this.health);
+	}
+	
+	moveClockwise() {
+		// Clockwise movement around screen
+		
+		if (this.base.x < width && this.base.y == height) {	//move to right along bottom
+		//console.log('bottom', this.base);
+			this.base.x += this.deltaX;
+			if (this.base.x > width) {
+				this.base.x = width;
+			}
+			return;
+		}
+		if (this.base.x > 0 && this.base.y == 0) {			//move to left along top
+		//console.log('top', this.base);
+			this.base.x -= this.deltaX;
+			if (this.base.x < 0) {
+				this.base.x = 0;
+			}
+			return;
+		}
+		
+		if (this.base.y > 0 && this.base.x == width) {		//move up along left edge
+		//console.log('left', this.base);
+			this.base.y -= this.deltaY;
+			if (this.base.y < 0) {
+				this.base.y = 0;
+			}
+			return;
+		}
+		if (this.base.y < height && this.base.x == 0) {		//move down along right edge
+		//console.log('right = ', this.base);
+			this.base.y += this.deltaY;
+			return;
+		}
+		
 	}
 
     update(baseX,baseY,followX,followY) {

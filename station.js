@@ -59,8 +59,8 @@ class Station {
 		let offsetX = random(this.x - this.w/2, this.x + this.w/2);
 		let offsetY = random(this.y - this.h/2, this.y + this.h/2);
 			
-		let numP = floor(random(400, 800));
-		fireworks.push(new Firework(offsetX, offsetY, numP));			
+		//let numP = floor(random(400, 800));
+		fireworks.push(new Firework(offsetX, offsetY, 200));			
 		
 		//remove p5 station from array - body removed in addEvents collisionEnd
 		stations.splice(idx, 1);
