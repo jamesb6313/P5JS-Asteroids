@@ -58,6 +58,13 @@ let gameTimeScale = 1;
 let gameLevel = 1;
 let gameStage = 1;
 
+/// hit count - not necessarily destroyed
+let asteroidsHit = 0;
+let stationsHit = 0;
+let tentaclesHit = 0;
+let orbsHit = 0;
+///
+
 let gamePause = false;
 let gameOver = false;
 let displayGameRules = false;
@@ -71,7 +78,7 @@ let p5Time = 0;
 //let pauseTime = 0;
 
 let canvas;
-//let tentRandomTarget;
+let tentRandomTarget;
 
 function setup() {
 	canvas = createCanvas(800, 500); //(windowWidth, windowHeight);
@@ -114,12 +121,19 @@ function setup() {
 	
 	domShipsHealthBar = select('#barHealth');
 	domShipsHealthVal = select('#perHealth');
+///
+	domGameScore = select('#gameScore');
 
+	domAsteroidsHit = select('#asteroidsHit');
+	domStationsHit = select('#stationsHit');	
+	domTentaclesHit = select('#tentaclesHit');
+	domOrbsHit = select('#orbsHit');
+///
 
-let debugging = true;
+let debugging = false: //true;
 	if (debugging == true) {
 		gameStage = 3;
-		gameLevel = 3;
+		gameLevel = 1;
 		setupGameLevel();
 	}
 	
@@ -131,7 +145,7 @@ let debugging = true;
 		}
 	}
 
-	//tentRandomTarget = createVector(floor(random(0,width)), floor(random(0, height)) );	
+	tentRandomTarget = createVector(floor(random(0,width)), floor(random(0, height)) );	
 }
 
 
@@ -176,7 +190,7 @@ function draw() {
 	if (frameCount % 10 == 0) {
 		
 
-		//tentRandomTarget = createVector(floor(random(0,width)), floor(random(0, height)) );
+		tentRandomTarget = createVector(floor(random(0,width)), floor(random(0, height)) );
 		
 		if (removeAsteroids) {
 			for (let i = asteroids.length - 1; i >= 0; i--) {
@@ -228,7 +242,7 @@ function draw() {
 		}
 	}
 
-// Display ASTERIODS
+// Display ASTEROIDS
 	for (let i = 0; i < asteroids.length; i++) {
 		asteroids[i].show();
 		asteroids[i].edges();
@@ -272,13 +286,15 @@ function draw() {
 // Display TENTICLES
 	for (let i = 0; i < tentacles.length; i++) {
         let t = tentacles[i];
-		//if (ship.body.position.y > height / 2) {
-			t.update(t.base.x,t.base.y,ship.body.position.x, ship.body.position.y);
-		/* } else {
-			t.update(t.base.x,t.base.y,tentRandomTarget.x, tentRandomTarget.y);
-		} */
-		
-		t.moveClockwise();
+		if (t.hitState) {
+			t.hitDone();
+			t.update(t.base.x,t.base.y,tentRandomTarget.x, tentRandomTarget.y);		
+		} else {
+			t.update(t.base.x,t.base.y,ship.body.position.x, ship.body.position.y);		
+		}
+		if (t.moving) {
+			t.moveClockwise();
+		}
         t.show();
     }
 
@@ -293,17 +309,24 @@ function draw() {
   
 }
 
-function laserFire() {
-
-}
-
-function laserEndCycle() {
-
+function removeTentacles() {
+	//Remove All existing tentacle sensor.bodys
+	for (var j = tentacles.length - 1; j >= 0; j--) {
+		World.remove(world, tentacles[j].body);										
+	}	
+	
+	//Remove All existing tentacles
+	for (var j = tentacles.length - 1; j >= 0; j--) {
+		tentacles.splice(j, 1);								
+	}
 }
 
 function setupGameLevel() {
 	
 	//console.log(gameLevel, gameStage);
+	let numTentacles;	//random number of tentacles each level
+	let horPos;			//position of tentacle or initial pos if moving = true
+	
 	switch(gameStage) {
 		case 1:
 			for (let i = 0; i < numAsteroids; i++) {
@@ -340,103 +363,103 @@ function setupGameLevel() {
 			}
 			break;
 		case 3:
+			removeTentacles();
 			
-			//Remove tentacle sensor.body
-			for (var j = tentacles.length - 1; j >= 0; j--) {
-				if (tentacles[j].health <= 0) {
-					World.remove(world, tentacles[j].body);										
-				}
-			}
-			
-			//Remove tentacle
-			for (var j = tentacles.length - 1; j >= 0; j--) {
-				if (tentacles[j].health <= 0) {
-					tentacles.splice(j, 1);								
-				}
-			}
-			
-			// Create new tentacles each level
-			let numTentacles = floor(random(3,7));
-			let horPos = floor(width - 20);
+			// Create New Set of Stationary tentacles each level
+			numTentacles = floor(random(3,7));
+			horPos = floor(width - 20);
 			for (let i = 0; i < numTentacles; i++) {			
 				let numSegs = floor(random(5,15));
 				tentacles.push(new Tentacle(horPos, height, numSegs, false ));
 				horPos -= floor(random(50,floor(width/2)));
+				if (horPos < 0) {
+					horPos = width;
+				}
 			}
 			
 			for (let i = 0; i < numAsteroids + 2; i++) {
 				asteroids.push(new Asteroid());
 			}
-			switch(gameLevel) {
-				case 1:
-/* 					if (stations.length == 0) {
+			
+			//let curStationNum = stations.length;
+			if (stations.length == 0) {
+				stations.push(new Station(width - 100, height / 2, 50, 50));
+				stations.push(new Station(100, height / 2, 50, 50));
+			} else {
+				if (stations.length == 1) {
+					
+					if (stations[0].x == 100) {
 						stations.push(new Station(width - 100, height / 2, 50, 50));
-					}
-					break; */
-				default:
-					//let curStationNum = stations.length;
-					if (stations.length == 0) {
-						stations.push(new Station(width - 100, height / 2, 50, 50));
-						stations.push(new Station(100, height / 2, 50, 50));
 					} else {
-						if (stations.length == 1) {
-							
-							if (stations[0].x == 100) {
-								stations.push(new Station(width - 100, height / 2, 50, 50));
-							} else {
-								stations.push(new Station(100, height / 2, 50, 50));
-							}
-						}
+						stations.push(new Station(100, height / 2, 50, 50));
 					}
+				}
 			}
 			break;
 		case 4:						
-			//Remove tentacle sensor.body
-			for (var j = tentacles.length - 1; j >= 0; j--) {
-				if (tentacles[j].health <= 0) {
-					World.remove(world, tentacles[j].body);										
+			removeTentacles();
+			
+			// Create New Set of Movng tentacles each level
+			numTentacles = floor(random(3,7));
+			horPos = floor(width - 20);
+			for (let i = 0; i < numTentacles; i++) {			
+				let numSegs = floor(random(5,15));
+				tentacles.push(new Tentacle(horPos, height, numSegs, true ));
+				horPos -= floor(random(50,floor(width/2)));
+				if (horPos < 0) {
+					horPos = width;
 				}
 			}
 			
-			//Remove tentacle
-			for (var j = tentacles.length - 1; j >= 0; j--) {
-				if (tentacles[j].health <= 0) {
-					tentacles.splice(j, 1);								
-				}
-			}
 			for (let i = 0; i < numAsteroids + 2; i++) {
 				asteroids.push(new Asteroid());
-			}
+			}			
 			
+			//let curStationNum = stations.length;
+			if (stations.length == 0) {
+				stations.push(new Station(width - 100, height / 2, 50, 50));
+				stations.push(new Station(100, height / 2, 50, 50));
+			} else {
+				if (stations.length == 1) {
+					
+					if (stations[0].x == 100) {
+						stations.push(new Station(width - 100, height / 2, 50, 50));
+					} else {
+						stations.push(new Station(100, height / 2, 50, 50));
+					}
+				}
+			}			
+			break;
+		case 5:
+			removeTentacles()	
+		
 			for (let i = 0; i < gameLevel;i++) {
 				let orbPos = { x: random(0, width) , y: random(0, height) }
 				orbs.push(new Orb(orbPos.x, orbPos.y));
 			}
-			switch(gameLevel) {
-				case 1:
-/* 					if (stations.length == 0) {
-						stations.push(new Station(width - 100, height / 2, 50, 50));
-					}
-					break; */
-				default:
-					//let curStationNum = stations.length;
-					if (stations.length == 0) {
-						stations.push(new Station(width - 100, height / 2, 50, 50));
-						stations.push(new Station(100, height / 2, 50, 50));
-					} else {
-						if (stations.length == 1) {
-							
-							if (stations[0].x == 100) {
-								stations.push(new Station(width - 100, height / 2, 50, 50));
-							} else {
-								stations.push(new Station(100, height / 2, 50, 50));
-							}
-						}
-					}
-			}
-			break;
+			
+			for (let i = 0; i < numAsteroids + 2; i++) {
+				asteroids.push(new Asteroid());
+			}	
+			
 
-	}
+			//let curStationNum = stations.length;
+			if (stations.length == 0) {
+				stations.push(new Station(width - 100, height / 2, 50, 50));
+				stations.push(new Station(100, height / 2, 50, 50));
+			} else {
+				if (stations.length == 1) {
+					
+					if (stations[0].x == 100) {
+						stations.push(new Station(width - 100, height / 2, 50, 50));
+					} else {
+						stations.push(new Station(100, height / 2, 50, 50));
+					}
+				}
+			}
+	
+
+	}	///END of switch(gameStage) ///
 	
 	if (stations.length > 0) {
 		fireRate = 3 * random(0, 0.005); //gameStage * gameLevel * random(0, 0.005);

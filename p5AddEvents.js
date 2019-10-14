@@ -226,6 +226,17 @@ function setHUD() {
 	
 	domShipsHealthBar.style('width: ' + healthPct.toFixed(0) + '%;');
 	domShipsHealthVal.html(healthPct.toFixed(2) + '%');
+	
+	
+///
+	domGameScore.html(score);
+
+	domAsteroidsHit.html(score);
+	domStationsHit.html(stationsHit);
+	
+	domTentaclesHit.html(tentaclesHit);
+	domOrbsHit.html(orbsHit);
+///
 }
 
 //DOM stop button callback
@@ -260,11 +271,12 @@ function displayInfo_Rules() {
 function gameOverDisplay() {
 	domGameRules.html('<h1><strong> GAME OVER - Thanks for Playing' +
 		'</strong><h1>');
-	domGameRules.style('display: block;');
+	domGameRules.style('opacity: 0.3; display: block;');
+	//domGameRules.style('opacity: 0.1;');
 }
 
 function setCanvasDisplay() {
-	textSize(32);
+/* 	textSize(32);
 	noStroke();
 	fill(255);
 	text('Score: ' + score, 10, 50);
@@ -274,5 +286,5 @@ function setCanvasDisplay() {
 	let disLevelTime = disTimeMinSec(timeSec);	
 	noStroke();
 	fill(255,0,0);
-	text('Time: ' + disLevelTime, 550, 50);
+	text('Time: ' + disLevelTime, 550, 50); */
 }

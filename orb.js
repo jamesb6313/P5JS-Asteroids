@@ -46,7 +46,9 @@ class Orb {
 		pop();
 	}
 	
-/* 	follow(tx, ty) {
+/* 	
+target ship with laser fire - not working, but don't need
+	follow(tx, ty) {
         let target = createVector(tx, ty);
         let dir = p5.Vector.sub(target, this.body.position);
         this.angle = dir.heading();

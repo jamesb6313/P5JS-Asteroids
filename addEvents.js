@@ -1,5 +1,20 @@
-function addEvents(e) {
+//Helper functions for addEvents(e)
+function calcHitMass(b) {
+	var hitMass = 1;
+	if (b.mass >= 10) {
+		hitMass = 10;
+	}
+	if (b.mass < 0.1) {
+		hitMass = 1;
+	}
+	if (b.label.indexOf("laser") >= 0) {
+		hitMass = 5;
+	}	
+	return hitMass;
+}
 
+
+function addEvents(e) {
 
 	// an example of using collisionStart event on an engine
 	Events.on(e, 'collisionStart', function(event) {
@@ -7,38 +22,17 @@ function addEvents(e) {
 		//console.log("Start event : ", e);
 		for (var i = 0; i < pairs.length; i++) {
 			var pair = pairs[i];
-
 						
 			let a = pair.bodyA;
 			let b = pair.bodyB;
 			
 			//ship collisions
 			if (a.label == 'ship') {
-				var hitMass = 1;
-				if (b.mass >= 10) {
-					hitMass = 10;
-				}
-				if (b.mass < 0.1) {
-					hitMass = 1;
-				}
-				if (b.label.indexOf("laser") >= 0) {
-					hitMass = 5;
-				}
-				
+				let hitMass = calcHitMass(b);				
 				ship.collisions(hitMass);
 			} else {
 				if (b.label == 'ship') {
-					var hitMass = 1;
-					if (a.mass >= 10) {
-						hitMass = 10;
-					}
-					if (a.mass < 0.1) {
-						hitMass = 1;
-					}
-					if (a.label.indexOf("laser") >= 0) {
-						hitMass = 5;
-					}
-				
+					let hitMass = calcHitMass(a);
 					ship.collisions(hitMass);
 				}
 			}			
@@ -46,58 +40,42 @@ function addEvents(e) {
 			//Asteroid collisions (possible hits)
 			if (a.label == 'asteroid') {
 				if (b.label.indexOf("laser") >= 0) {
-					score = (b.label.indexOf("laser") == 0) ? score + 1: score;
+					score = (b.label == "laser") ? score + 1: score;
 					
 					for (var j = asteroids.length - 1; j >= 0; j--) {
 						if (a.id == asteroids[j].id) {
 							
 							if ((asteroids[j].r * 0.5) >= minAsteroidRadius) {
-							//if (a.circleRadius >= minAsteroidRadius) {
 								asteroids[j].split = true;
 							}
 							asteroids[j].dead = true;
 							break;
 						}
 					}
-					//b.label = "dead";
 				}
 			} else {
 				if (a.label.indexOf("laser") >= 0) {
 					if (b.label == 'asteroid') {
-						score = (b.label.indexOf("laser") == 0) ? score + 1: score;
+						score = (b.label == "laser") ? score + 1: score;
 						
 						for (var j = asteroids.length - 1; j >= 0; j--) {
 							if (b.id == asteroids[j].id) {
 								
 								if ((asteroids[j].r * 0.5) >= minAsteroidRadius) {
-								//if (b.circleRadius >= minAsteroidRadius) {
 									asteroids[j].split = true;
 								}
 								asteroids[j].dead = true;							
 								break;
 							}
 						}
-						//a.label = "dead";
 					}
 				}
 			}			
 			
 			//station collisions
 			if (a.label == 'station') {
-				//console.log('a - station hit');
-				var hitMass = 1;
-				if (b.mass >= 10) {
-					hitMass = 10;
-				}
-				if (b.mass < 0.1) {
-					hitMass = 1;
-				}
-				if (b.label.indexOf("laser") >= 0) {
-					hitMass = 5;
-				}
-				//console.log('stations.length = ', stations.length);
-				//console.log(a,b);
-				///
+				stationsHit = (b.label == "laser") ? stationsHit + 1: stationsHit;
+				let hitMass = calcHitMass(b);
 				for (var j = stations.length - 1; j >= 0; j--) {
 					if (a.id == stations[j].id) {
 						stations[j].collisions(hitMass);
@@ -107,34 +85,21 @@ function addEvents(e) {
 
 			} else {
 				if (b.label == 'station') {
-					//console.log('b - station hit');
-					var hitMass = 1;
-					if (a.mass >= 10) {
-						hitMass = 10;
-					}
-					if (a.mass < 0.1) {
-						hitMass = 1;
-					}
-					if (a.label.indexOf("laser") >= 0) {
-						hitMass = 5;
-					}
-					//console.log('b - station hit');
-					///
+					stationsHit = (a.label == "laser") ? stationsHit + 1: stationsHit;
+					let hitMass = calcHitMass(a);
 					for (var j = stations.length - 1; j >= 0; j--) {
 						if (b.id == stations[j].id) {
 							stations[j].collisions(hitMass);	
 							break;
 						}
-					}
-				
-					///				
+					}			
 				}
 			}
 			
-			////
 			//orb collisions - (hits by laser)
 			if (a.label == 'orb') {
 				if (b.label.indexOf("laser") >= 0) {
+					orbsHit = (b.label == "laser") ? orbsHit + 1: orbsHit;
 					console.log('orb hit');
 					for (var j = orbs.length - 1; j >= 0; j--) {
 						if (a.id == orbs[j].id) {
@@ -155,6 +120,7 @@ function addEvents(e) {
 			} else {
 				if (a.label.indexOf("laser") >= 0) {
 					if (b.label == 'orb') {
+						orbsHit = (a.label == "laser") ? orbsHit + 1: orbsHit;
 						console.log('orb hit');
 						for (var j = orbs.length - 1; j >= 0; j--) {
 							if (b.id == orbs[j].id) {
@@ -173,25 +139,19 @@ function addEvents(e) {
 				}
 			}
 			
-			////
-			
-			//laser collisions
-			if (a.label.indexOf("laser") >= 0) {
-				a.label = "dead";
-			} else {
-				if (b.label.indexOf("laser") >= 0) {
-					b.label = "dead";
-				}
-			}
-			
 			//tentacleSensor collision
 			if (a.label == 'tentacleSensor') {
 				let sensorFound = false;
 				for (var j = tentacles.length - 1; j >= 0; j--) {
-					if (a.id == tentacles[j].id) {
+					if (a.id == tentacles[j].id && b.label != "station") {
 						tentacles[j].collisions(1);
+						if (b.label.indexOf("laser") >= 0) {
+							tentaclesHit = (b.label == "laser") ? tentaclesHit + 1: tentaclesHit;
+							tentacles[j].hitState = true;
+						}
 						sensorFound = true;
-						console.log('orbTentacle health ', tentacles[j].health);
+						console.log('tentacle health ', tentacles[j].health.toFixed(2));
+						console.log(b.label);
 						break;
 					}
 				}
@@ -199,9 +159,11 @@ function addEvents(e) {
 				if (!sensorFound && orbs.length > 0) {
 					for (let i = 0; i < orbs.length; i++) {
 						if (orbs[i].orbTentacle) {
-							if (a.id == orbs[i].orbTentacle.body.id) {
-								orbs[i].orbTentacle.collisions(10);
-								console.log('Tentacle health ', orbs[i].orbTentacle.health);
+							if (a.id == orbs[i].orbTentacle.body.id  && b.label.indexOf("laser") >= 0) {
+								tentaclesHit = (b.label == "laser") ? tentaclesHit + 1: tentaclesHit;
+								orbs[i].orbTentacle.collisions(2);
+								//orbs[i].orbTentacle.hitState = true;
+								console.log('orbTentacle health ', orbs[i].orbTentacle.health);
 							}
 						}
 					}
@@ -210,13 +172,18 @@ function addEvents(e) {
 				if (b.label == 'ship') {
 					ship.collisions(0.01);
 				}
+
 			} else {
 				let sensorFound = false;
 				if (b.label == 'tentacleSensor') {
 					for (var j = tentacles.length - 1; j >= 0; j--) {
-						if (b.id == tentacles[j].id) {
+						if (b.id == tentacles[j].id  && a.label != "station") {
 							tentacles[j].collisions(1);
-							console.log('Tentacle health ', tentacles[j].health);
+							if (a.label.indexOf("laser") >= 0) {
+								tentaclesHit = (a.label == "laser") ? tentaclesHit + 1: tentaclesHit;
+								tentacles[j].hitState = true;
+							}
+							console.log('tentacle health ', tentacles[j].health.toFixed(2));
 							sensorFound = true;
 							break;
 						}
@@ -224,8 +191,10 @@ function addEvents(e) {
 					if (!sensorFound && orbs.length > 0) {
 						for (let i = 0; i < orbs.length; i++) {
 							if (orbs[i].orbTentacle) {
-								if (b.id == orbs[i].orbTentacle.body.id) {
-									orbs[i].orbTentacle.collisions(10);
+								if (b.id == orbs[i].orbTentacle.body.id && a.label.indexOf("laser") >= 0) {
+									tentaclesHit = (a.label == "laser") ? tentaclesHit + 1: tentaclesHit;
+									orbs[i].orbTentacle.collisions(2);
+									//orbs[i].orbTentacle.hitState = true;
 									console.log('orbTentacle health ', orbs[i].orbTentacle.health);
 								}
 							}
@@ -233,9 +202,18 @@ function addEvents(e) {
 					}
 					
 					if (a.label == 'ship') {
-						//console.log('tentacle collision');
+						console.log('tentacle collision - by ship');
 						ship.collisions(0.01);
 					}
+				}
+			}
+
+			//laser collisions - DO THIS LAST within foreach pairs
+			if (a.label.indexOf("laser") >= 0) {
+				a.label = "dead";
+			} else {
+				if (b.label.indexOf("laser") >= 0) {
+					b.label = "dead";
 				}
 			}			
 		}
@@ -282,10 +260,10 @@ function addEvents(e) {
 			
 			//ship collisions
 			if (a.label == 'ship') {
-				ship.collisions(0.25);
+				ship.collisions(0.10);
 			} else {
 				if (b.label == 'ship') {
-					ship.collisions(0.25);
+					ship.collisions(0.10);
 				}
 			}
 			
@@ -392,7 +370,10 @@ function addEvents(e) {
 		//Remove tentacle
 		for (var j = tentacles.length - 1; j >= 0; j--) {
 			if (tentacles[j].health <= 0) {
-				tentacles.splice(j, 1);								
+				tentacles.splice(j, 1);
+				ship.health += 0.05; 
+				ship.health = (ship.health > 1) ? 1 : ship.health;
+				ship.changeColor();				
 			}
 		}
 				
@@ -410,7 +391,10 @@ function addEvents(e) {
 		//Remove orb
  		for (var i = orbs.length - 1; i >= 0; i--) {
 			if (orbs[i].dead) {
-				orbs.splice(i, 1);
+				orbs.splice(i, 1)
+				ship.health += 0.1; 
+				ship.health = (ship.health > 1) ? 1 : ship.health;
+				ship.changeColor();;
 			}
 		} 
 	});

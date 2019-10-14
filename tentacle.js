@@ -5,8 +5,12 @@
 // Tanscription to Javascript: Chuck England
 
 class Tentacle {
-    constructor(x, y, numSegments) {
+    constructor(x, y, numSegments, moving) {
         this.segments = [];
+		this.hitDuration = floor(random(20, 300));
+		this.hitState = false;
+		
+		this.moving = moving;
 		this.deltaX = 5;		//move 5 pixels right
 		this.deltaY = 5;		//move 5 pixels down
 		
@@ -25,8 +29,8 @@ class Tentacle {
 			isSensor: true,
 			label: "tentacleSensor"
 		}
-		let sensorPos = this.segments[this.segments.length - 1].b;
-		this.body = Bodies.circle(sensorPos.x, sensorPos.y, 1, options);
+		let sensorPos = this.segments[this.segments.length - 1].b;	//end of last segment
+		this.body = Bodies.circle(sensorPos.x, sensorPos.y, 5, options);
 		this.id = this.body.id;
 		World.add(world, this.body);
     }
@@ -92,7 +96,6 @@ class Tentacle {
         for (let i = total - 2; i >= 0; i--) {
             this.segments[i].followChild(this.segments[i + 1]);
 			this.segments[i].update(baseX,baseY,followX,followY);
-            //this.segments[i].update(followX,followY);
         }
 
         this.segments[0].setA(this.base);
@@ -101,7 +104,26 @@ class Tentacle {
             this.segments[i].setA(this.segments[i - 1].b);
         }
 		
+/* 		if (!this.hitDone()) {
+			this.hitDuration -= 4;
+			console.log('update: hitDur = ', this.hitDuration);
+		} */
     }
+	
+		
+	hitDone() {		
+		if (this.hitDuration < 0) {
+			console.log('hitDur < 0 ', this.hitDuration, ', hitState =  ', this.hitState);
+			this.hitState = false;
+			this.hitDuration = floor(random(20, 300));
+			return true;
+		} else {
+			console.log('hitDur > 0 ', this.hitDuration, ', hitState =  ', this.hitState);
+			this.hitDuration -= 4;
+			//this.hitState = true;
+			return false;
+		}	
+	}
 
     show() {
         for (let i = 0; i < this.segments.length; i++) {

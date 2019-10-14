@@ -64,8 +64,6 @@ class Station {
 		
 		//remove p5 station from array - body removed in addEvents collisionEnd
 		stations.splice(idx, 1);
-		
-		this.clr = 255;
 	}
 	
 	collisions(hitMass) {
