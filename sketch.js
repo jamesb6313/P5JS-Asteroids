@@ -130,9 +130,9 @@ function setup() {
 	domOrbsHit = select('#orbsHit');
 ///
 
-let debugging = false; //true;
+let debugging = false;
 	if (debugging == true) {
-		gameStage = 3;
+		gameStage = 2;
 		gameLevel = 1;
 		setupGameLevel();
 	}

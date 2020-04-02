@@ -79,6 +79,10 @@ function addEvents(e) {
 				for (var j = stations.length - 1; j >= 0; j--) {
 					if (a.id == stations[j].id) {
 						stations[j].collisions(hitMass);
+						//Fire back at ship
+						if (b.label == "laser") {
+							lasers.push(new Laser(stations[j]));
+						}
 						break;
 					}
 				}
@@ -89,7 +93,12 @@ function addEvents(e) {
 					let hitMass = calcHitMass(a);
 					for (var j = stations.length - 1; j >= 0; j--) {
 						if (b.id == stations[j].id) {
-							stations[j].collisions(hitMass);	
+							stations[j].collisions(hitMass);
+							//Fire back at ship
+							if (a.label == "laser") {
+								lasers.push(new Laser(stations[j]));
+							}							
+								
 							break;
 						}
 					}			

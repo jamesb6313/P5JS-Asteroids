@@ -135,7 +135,7 @@ function drawStageLevel() {
 	let displayText = 'Stage ' + gameStage + ' - Level ' + gameLevel;
 	text(displayText, (width / 2) - 100, (height / 2) - 130);
 	
-	displayText = 'Completed - congradulations';
+	displayText = 'Completed - congratulations';
 	text(displayText, (width / 2) - 170, (height / 2) - 70);
 	
 	pop();
@@ -145,13 +145,13 @@ function drawContinueButton(){
 	push();
 	rectMode(CENTER);
 	strokeWeight(2);
-	stroke(0, 255, 0);
-	fill(0, 255, 0, 127);
+	stroke(0, 255, 0, 50);
+	fill(0, 255, 0, 50);
 	rect((width / 2) - 100, (height / 2), 100, 50, 20);		
 	
 	textSize(20);
 	noStroke();
-	fill(255);
+	fill(255,255,255,50);
 	text('Continue', (width / 2) - 140, (height / 2) + 5);
 	pop();
 }
@@ -160,13 +160,13 @@ function drawStopButton() {
 	push();
 	rectMode(CENTER);
 	strokeWeight(2);
-	stroke(255, 0, 0);
-	fill(255, 0, 0, 127);
+	stroke(255, 0, 0, 50);
+	fill(255, 0, 0, 50);
 	rect((width / 2) + 100, (height / 2), 100, 50, 20);		
 	
 	textSize(20);	
 	noStroke();
-	fill(255);
+	fill(255,255,255,50);
 	text('Stop', (width / 2) + 80, (height / 2) + 5);
 	pop();
 }
